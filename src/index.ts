@@ -1,4 +1,4 @@
-import { APISelectMenuDefaultValue, ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ChannelSelectMenuBuilder, ChannelType, EmbedBuilder, MentionableSelectMenuBuilder, RoleSelectMenuBuilder, SelectMenuDefaultValueType, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, UserSelectMenuBuilder, disableValidators } from 'discord.js';
+import { APISelectMenuDefaultValue, ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ChannelSelectMenuBuilder, ChannelType, EmbedBuilder, MentionableSelectMenuBuilder, ModalBuilder, RoleSelectMenuBuilder, SelectMenuDefaultValueType, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, TextInputBuilder, UserSelectMenuBuilder, disableValidators } from 'discord.js';
 import './jsx';
 
 namespace Diseact {
@@ -55,7 +55,8 @@ namespace Diseact {
 			option: OptionElement,
 
 			/* Modal */
-			// modal: ModalElement,
+			modal: ModalElement,
+			textinput: TextInputElement,
 
 			/* Embed */
 			embed: EmbedElement,
@@ -135,6 +136,20 @@ namespace Diseact {
 
 	function OptionElement(props: JSX.IntrinsicElements['option'], children) {
 		return { e: 'option', c: children.toString(), p: props }
+	}
+
+	function ModalElement(props: JSX.IntrinsicElements['modal'], children: ReturnType<typeof ActionRowElement>[]) {
+		const modal = new ModalBuilder({ ...props })
+
+		for(const child of children) {
+			modal.addComponents(child as ActionRowBuilder<TextInputBuilder>)
+		}
+
+		return modal;
+	}
+
+	function TextInputElement(props: JSX.IntrinsicElements['textinput'], children) {
+		return new TextInputBuilder({ ...props, label: props.label ?? children.toString() });
 	}
 
 	function EmbedElement(props: JSX.IntrinsicElements['embed'], children) {

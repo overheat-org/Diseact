@@ -1,4 +1,4 @@
-import { ButtonStyle, ChannelType } from "discord.js";
+import { ButtonStyle, ChannelType, TextInputStyle } from "discord.js";
 import Diseact, { SelectMenuVariant } from "..";
 
 const buttons = <row>
@@ -30,4 +30,10 @@ const menus = <row>
 	/>
 </row>
 
-console.log({ buttons, menus })
+const modal = <modal id="modal" title="My modal">
+	<row>
+		<textinput id="" style={TextInputStyle.Short} required>Write here: </textinput>
+	</row>
+</modal>
+
+console.log({ buttons, menus, modal })

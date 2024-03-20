@@ -1,9 +1,23 @@
-import { ButtonStyle, ColorResolvable } from "discord.js";
+import { ButtonStyle, ColorResolvable, TextInputStyle } from "discord.js";
 import { UnionSelectMenu } from ".";
 
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
+			"modal": {
+				id: string
+				title: string
+			},
+			"textinput": {
+				id: string
+				label?: string
+				style: TextInputStyle
+				placeholder?: string
+				minLength?: number
+				maxLength?: number
+				value?: string
+				required?: boolean
+			}
 			"option": {
 				value: string
 				description?: string
@@ -11,7 +25,6 @@ declare global {
 				emoji?: string
 				default?: boolean
 			}
-			
 			"selectmenu": UnionSelectMenu
 			"row": {}
 			"button": {
