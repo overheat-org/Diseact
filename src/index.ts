@@ -1,4 +1,4 @@
-import { APISelectMenuDefaultValue, ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ChannelSelectMenuBuilder, ChannelType, EmbedBuilder, MentionableSelectMenuBuilder, ModalBuilder, RoleSelectMenuBuilder, SelectMenuDefaultValueType, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, TextInputBuilder, UserSelectMenuBuilder, disableValidators } from 'discord.js';
+import DJS from 'discord.js';
 import './jsx';
 
 namespace Diseact {
@@ -24,7 +24,7 @@ namespace Diseact {
 	export interface ChannelSelectMenu extends BaseSelectMenu { 
 		variant: SelectMenuVariant.Channel,
 		defaultChannel: string[], 
-		channelTypes: ChannelType[]
+		channelTypes: DJS.ChannelType[]
 	}
 	export interface RoleSelectMenu extends BaseSelectMenu { 
 		variant: SelectMenuVariant.Role, 
@@ -32,7 +32,7 @@ namespace Diseact {
 	}
 	export interface MentionableSelectMenu extends BaseSelectMenu { 
 		variant: SelectMenuVariant.Mentionable,
-		defaultValues: (APISelectMenuDefaultValue<SelectMenuDefaultValueType.Role> | APISelectMenuDefaultValue<SelectMenuDefaultValueType.User>)[] 
+		defaultValues: (DJS.APISelectMenuDefaultValue<DJS.SelectMenuDefaultValueType.Role> | DJS.APISelectMenuDefaultValue<DJS.SelectMenuDefaultValueType.User>)[] 
 	}
 	export interface StringSelectMenu extends BaseSelectMenu{ 
 		variant: SelectMenuVariant.String,
@@ -74,17 +74,17 @@ namespace Diseact {
 	}
 	
 	function ActionRowElement(props, children) {
-		const components = new Array<AnyComponentBuilder>();
+		const components = new Array<DJS.AnyComponentBuilder>();
 
 		for(const child of children) {
 			components.push(child)
 		}
 
-		return new ActionRowBuilder().setComponents(components);
+		return new DJS.ActionRowBuilder().setComponents(components);
 	}
 
 	function ButtonElement(props, children) {
-		const btn = new ButtonBuilder()
+		const btn = new DJS.ButtonBuilder()
 			.setCustomId(props.id)
 			.setDisabled(props.disabled ?? false)
 			.setLabel(props.label ?? children.toString())
@@ -97,25 +97,23 @@ namespace Diseact {
 		return btn;
 	}
 
-	function SelectMenuElement(props: JSX.IntrinsicElements['selectmenu'], children) {
+	function SelectMenuElement(props: JSX.IntrinsicElements['selectmenu'], children: ReturnType<typeof OptionElement>[]) {
 		const selectMenu = {
-			[SelectMenuVariant.User]: () => new UserSelectMenuBuilder()
+			[SelectMenuVariant.User]: () => new DJS.UserSelectMenuBuilder()
 				.setDefaultUsers((props as UserSelectMenu).defaultUsers),
 
-			[SelectMenuVariant.Channel]: () => new ChannelSelectMenuBuilder()
+			[SelectMenuVariant.Channel]: () => new DJS.ChannelSelectMenuBuilder()
 				.setChannelTypes((props as ChannelSelectMenu).channelTypes)
 				.setDefaultChannels((props as ChannelSelectMenu).defaultChannel),
 
-			[SelectMenuVariant.Role]: () => new RoleSelectMenuBuilder()
+			[SelectMenuVariant.Role]: () => new DJS.RoleSelectMenuBuilder()
 				.setDefaultRoles((props as RoleSelectMenu).defaultRoles),
 
-			[SelectMenuVariant.Mentionable]: () => new MentionableSelectMenuBuilder()
+			[SelectMenuVariant.Mentionable]: () => new DJS.MentionableSelectMenuBuilder()
 				.setDefaultValues((props as MentionableSelectMenu).defaultValues),
 				
-			[SelectMenuVariant.String]: () => new StringSelectMenuBuilder()
-				.setOptions(children.map((child) => 
-					new StringSelectMenuOptionBuilder({ ...child.p, label: child.p.label ?? child.c })
-				))
+			[SelectMenuVariant.String]: () => new DJS.StringSelectMenuBuilder()
+				.setOptions(children)
 		}[props.variant]();
 
 		selectMenu
@@ -135,25 +133,25 @@ namespace Diseact {
 	}
 
 	function OptionElement(props: JSX.IntrinsicElements['option'], children) {
-		return { e: 'option', c: children.toString(), p: props }
+		return new DJS.StringSelectMenuOptionBuilder({ ...props, label: props.label ?? children.toString() });
 	}
 
 	function ModalElement(props: JSX.IntrinsicElements['modal'], children: ReturnType<typeof ActionRowElement>[]) {
-		const modal = new ModalBuilder({ ...props })
+		const modal = new DJS.ModalBuilder({ ...props })
 
 		for(const child of children) {
-			modal.addComponents(child as ActionRowBuilder<TextInputBuilder>)
+			modal.addComponents(child as DJS.ActionRowBuilder<DJS.TextInputBuilder>)
 		}
 
 		return modal;
 	}
 
 	function TextInputElement(props: JSX.IntrinsicElements['textinput'], children) {
-		return new TextInputBuilder({ ...props, label: props.label ?? children.toString() });
+		return new DJS.TextInputBuilder({ ...props, label: props.label ?? children.toString() });
 	}
 
 	function EmbedElement(props: JSX.IntrinsicElements['embed'], children) {
-		const embed = new EmbedBuilder();
+		const embed = new DJS.EmbedBuilder();
 
 		const acceptedTypes = {
 			title: child => embed.setTitle(child.c),

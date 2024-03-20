@@ -1,13 +1,19 @@
 {
   "name": "diseact",
   "version": "1.0.0",
-  "description": "",
+  "description": "A package to make Discord Embeds and Components using JSX",
+  "keywords": [
+	"discord.js",
+	"discord",
+	"react",
+	"jsx"
+  ],
   "main": "lib/index.js",
   "types": "types/index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+	"name": "</Nexus_Prime>",
+	"url": "https://nexusprime.vercel.app/"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^20.11.24",

@@ -1,4 +1,4 @@
-import { ButtonStyle, ColorResolvable, TextInputStyle } from "discord.js";
+import DJS from "discord.js";
 import { UnionSelectMenu } from ".";
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
 			"textinput": {
 				id: string
 				label?: string
-				style: TextInputStyle
+				style: DJS.TextInputStyle
 				placeholder?: string
 				minLength?: number
 				maxLength?: number
@@ -33,11 +33,11 @@ declare global {
 				emoji?: string
 				label?: string
 			} & (
-				| { variant: ButtonStyle.Link, url: string }
-				| { variant: ButtonStyle.Danger | ButtonStyle.Primary | ButtonStyle.Secondary | ButtonStyle.Danger }
+				| { variant: DJS.ButtonStyle.Link, url: string }
+				| { variant: DJS.ButtonStyle.Danger | DJS.ButtonStyle.Primary | DJS.ButtonStyle.Secondary | DJS.ButtonStyle.Danger }
 			)
 			"embed": {
-				color?: ColorResolvable
+				color?: DJS.ColorResolvable
 				timestamp?: Date | number
 			}
 			"title": {}
