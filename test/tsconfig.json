@@ -1,0 +1,6 @@
+{
+	"compilerOptions": {
+		"jsxFactory": "Diseact.createElement",
+		"jsx": "react"
+	}
+}
