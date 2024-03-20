@@ -1,5 +1,39 @@
 Diseact is a JavaScript library for create components/embeds/commands of Discord API using JSX.
 
+# Why?
+Use:
+```tsx
+const modal = <modal id='myModal' title='My Modal'>
+	<textinput id='favoriteColorInput' style={TextInputStyle.Short}>
+		What's your favorite color?
+	</textinput>
+	
+	<textinput id='hobbiesInput' style={TextInputStyle.Paragraph}>
+		What's some of your favorite hobbies?
+	</textinput>
+</modal>
+```
+instead:
+```tsx
+const modal = new ModalBuilder()
+	.setCustomId('myModal')
+	.setTitle('My Modal');
+
+const favoriteColorInput = new TextInputBuilder()
+	.setCustomId('favoriteColorInput')
+	.setLabel("What's your favorite color?")
+	.setStyle(TextInputStyle.Short);
+
+const hobbiesInput = new TextInputBuilder()
+	.setCustomId('hobbiesInput')
+	.setLabel("What's some of your favorite hobbies?")
+	.setStyle(TextInputStyle.Paragraph);
+
+const firstActionRow = new ActionRowBuilder().addComponents(favoriteColorInput);
+const secondActionRow = new ActionRowBuilder().addComponents(hobbiesInput);
+
+modal.addComponents(firstActionRow, secondActionRow);
+```
 # How to use
 1- Install the package on your project:
 ```
