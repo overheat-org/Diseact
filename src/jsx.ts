@@ -1,61 +1,39 @@
-import DJS from "discord.js";
-import { UnionSelectMenu } from ".";
+import { Embed, Command, SubCommand, Group, Modal, TextInput, SelectMenu, Row, Button, Title, Description, Author, Thumbnail, Footer, Field, Fields, Option, Image } from "./elements";
+import { ComponentElements } from "./builders/component";
 
 declare global {
-	namespace JSX {
-		interface IntrinsicElements {
-			"modal": {
-				id: string
-				title: string
-			},
-			"textinput": {
-				id: string
-				label?: string
-				style: DJS.TextInputStyle
-				placeholder?: string
-				minLength?: number
-				maxLength?: number
-				value?: string
-				required?: boolean
-			}
-			"option": {
-				value: string
-				description?: string
-				label?: string
-				emoji?: string
-				default?: boolean
-			}
-			"selectmenu": UnionSelectMenu
-			"row": {}
-			"button": {
-				id: string
-				disabled?: boolean
-				emoji?: string
-				label?: string
-			} & (
-				| { variant: DJS.ButtonStyle.Link, url: string }
-				| { variant: DJS.ButtonStyle.Danger | DJS.ButtonStyle.Primary | DJS.ButtonStyle.Secondary | DJS.ButtonStyle.Danger }
-			)
-			"embed": {
-				color?: DJS.ColorResolvable
-				timestamp?: Date | number
-			}
-			"title": {}
-			"description": {}
-			"author": {
-				iconURL?: string
-				url?: string
-			}
-			"image": {}
-			"thumbnail": {}
-			"footer": {
-				iconURL?: string
-			}
-			"field": {
-				name: string
-				inline?: boolean
-			}
-			"fields": {}
+    namespace JSX {
+		type EmbedPropsElements<E extends keyof IntrinsicElements> = { 
+			e: E, 
+			p: IntrinsicElements[E]
+			c: Element | string
 		}
-	}
+        // type Element<E extends keyof IntrinsicElements = any> = ComponentElements<E> extends null 
+		// 	? EmbedPropsElements<E> 
+		// 	: ComponentElements<E>
+		type Element = any
+
+        type IntrinsicElement<T> = T;
+        interface IntrinsicElements {
+            // "command": IntrinsicElement<Command>;
+            // "subcommand": IntrinsicElement<Subcommand>;
+            // "group": IntrinsicElement<Group>;
+            "modal": IntrinsicElement<Modal>;
+            "textinput": IntrinsicElement<TextInput>;
+            "option": IntrinsicElement<Option>;
+            "selectmenu": IntrinsicElement<SelectMenu>;
+            "row": IntrinsicElement<Row>;
+            "button": IntrinsicElement<Button>;
+            "embed": IntrinsicElement<Embed>;
+            "title": IntrinsicElement<Title>;
+            "description": IntrinsicElement<Description>;
+            "author": IntrinsicElement<Author>;
+            "image": IntrinsicElement<Image>;
+            "thumbnail": IntrinsicElement<Thumbnail>;
+            "footer": IntrinsicElement<Footer>;
+            "field": IntrinsicElement<Field>;
+            "fields": IntrinsicElement<Fields>;
+        }
+    }
 }
+
