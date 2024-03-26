@@ -1,5 +1,9 @@
 {
 	"compilerOptions": {
+		"target": "ESNext",
+		"module": "CommonJS",
+		"esModuleInterop": true,
+		"strict": true,
 		"jsxFactory": "Diseact.createElement",
 		"jsx": "react"
 	}
