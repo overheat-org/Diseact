@@ -5,6 +5,8 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"jsxFactory": "Diseact.createElement",
-		"jsx": "react"
+		"jsxFragmentFactory": "Diseact.Fragment",
+		"jsx": "react",
+		"noImplicitAny": false
 	}
 }

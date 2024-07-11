@@ -1,13 +1,6 @@
 import { AnyComponentBuilder, ActionRowBuilder, ButtonBuilder, UserSelectMenuBuilder, ChannelSelectMenuBuilder, RoleSelectMenuBuilder, MentionableSelectMenuBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ModalBuilder, TextInputBuilder, ButtonStyle } from "discord.js";
-import { Button, ChannelSelectMenu, MentionableSelectMenu, RoleSelectMenu, SelectMenu, UserSelectMenu } from "../elements";
-
-export enum SelectMenuVariant {
-	User,
-	Channel,
-	Role,
-	Mentionable,
-	String
-}
+import { Button, ChannelSelectMenu, MentionableSelectMenu, RoleSelectMenu, SelectMenu, UserSelectMenu } from "../elements/entities";
+import { SelectMenuVariant } from "..";
 
 export function ActionRowElement(props, children) {
 	const components = new Array<AnyComponentBuilder>();
