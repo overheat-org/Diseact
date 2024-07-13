@@ -1,3 +1,5 @@
+**Deprecated documentation**
+
 Diseact is a JavaScript library for create components/embeds/commands of Discord API using JSX.
 
 # Why?
