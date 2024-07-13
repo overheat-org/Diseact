@@ -1,73 +1,73 @@
-import { Client, ColorResolvable, TextChannel } from 'discord.js';
-import Diseact, { useEffect } from '../';
+import { test } from 'node:test';
+import { ButtonStyle, Client, StringSelectMenuInteraction, TextChannel } from 'discord.js';
+import Diseact from '..';
 import 'dotenv/config';
 
 const { TEST_CHANNEL, TOKEN } = process.env;
 
-test("Testing components rendering", done => {
+test("Testing components rendering", (t, done) => {
 	const client = new Client({ intents: ['Guilds', 'GuildMessages'] });
 	
 	client.once('ready', async () => {
 		const channel = await client.channels.fetch(TEST_CHANNEL!) as TextChannel;
-
-		// it("Class Component", done => {
-			class MyComponent extends Diseact.Component {
-				state = {
-					name: '',
-					color: 'White'
-				}
-	
-				didMount() {
-					setTimeout(() => this.setState({ ...this.state, name: "Nexus" }), 2500);
-					setTimeout(() => this.setState({ ...this.state, color: "Red" }), 5000);
-				}
-
-				didUpdate(prevProps, prevState): void {
-					if(this.state.color === "Red") {
-						done();
-					}
-				}
-	
-				render() {
-					return <opts isMessage>
-						<embed color={this.state.color as ColorResolvable}>
-							<title>hello {this.state.name}</title>
-							<description>How r u?</description>
-							<footer>Footer</footer>
-						</embed>
-					</opts>
-				}
-			}
 			
-			Diseact.render(channel, <MyComponent />);
-		// }, 1000 * 20);
+		function Counter() {
+			const [count, setCount] = Diseact.useState(0);
 
-		// it("Functional Component", done => {
-			// function MyComponent() {
-			// 	const [name, setName] = Diseact.useState('');
-			// 	const [color, setColor] = Diseact.useState('White');
+			const handleIncrement = () => {
+				setCount(c => c + 1);
+			}
 
-			// 	useEffect(() => {
-			// 		setTimeout(() => setName("Nexus"), 2500);
-			// 		setTimeout(() => setColor("Red"), 5000);
-			// 	}, [])
+			const handleDecrement = () => {
+				setCount(c => c - 1);
+			}
 
-			// 	useEffect(() => {
-			// 		if(color == 'Red') done();
-			// 	}, [color])
+			return <container isMessage>
+				<embed>
+					<title>Counter</title>
+					<description>Count: {count}</description>
+				</embed>
 
-			// 	return <opts isMessage>
-			// 		<embed color={color}>
-			// 			<title>hello {name}</title>
-			// 			<description>How r u?</description>
-			// 			<footer>Footer</footer>
-			// 		</embed>
-			// 	</opts>
-			// }
+				<button 
+					id="increment"
+					label='+' 
+					variant={ButtonStyle.Success}
+					onClick={handleIncrement} 
+				/>
 
-			// Diseact.render(channel, <MyComponent />)
-		// },  1000 * 20);
+				<button
+					id="decrement"
+					label='-'
+					variant={ButtonStyle.Danger}
+					onClick={handleDecrement}
+				/>
+			</container>
+		}
+
+		Diseact.render(channel, <Counter />)
+
+		function Options() {
+			const [option, setOption] = Diseact.useState<string | null>(null);
+
+			const handleSelection = (i: StringSelectMenuInteraction) => {
+				setOption(i.values[0])
+			}
+
+			return <container isMessage>
+				<embed>
+					<title>Options</title>
+					<description>{option ? `Selected: ${option}`: 'Nothing'}</description>
+				</embed>
+				
+				<selectmenu isString max={1} id='selectmenu' placeholder="Select" onSelect={handleSelection}>
+					<option value='cat' label='Cat'>It's a cat</option>
+					<option value='dog' label='Dog'>It's a dog</option>
+				</selectmenu>
+			</container>
+		}
+
+		Diseact.render(channel, <Options />)
 	});
 
 	client.login(TOKEN);
-}, 1000 * 30)
+})

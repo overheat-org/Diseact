@@ -1,5 +1,4 @@
 package-lock.json
 node_modules
-lib
 types
 test/.env

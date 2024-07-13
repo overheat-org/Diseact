@@ -13,9 +13,15 @@ const localization = {
 
 export default (
 	<command name="member" description="" localizations={localization}>
-		<subcommand name="">
-			{(interaction: CommandInteraction) => {
-				interaction
+		<subcommand name="add">
+			<string name="myString " autocomplete={() => {}} optional/>
+			{(interaction) => {
+				interaction.reply("adding")
+			}}
+		</subcommand>
+		<subcommand name="remove">
+			{(interaction) => {
+				interaction.reply("removing")
 			}}
 		</subcommand>
 	</command>

@@ -1,4 +1,6 @@
-/** @type {import('./entity').Component} */
+import { enqueueRender } from './process';
+
+/** @type {import('./process').Component} */
 export let currentComponent, currentIndex = 0;
 
 export const setCurrentIndex = index => currentIndex = index;
@@ -16,22 +18,17 @@ function getHookState(index) {
 
 export function useState(initialState) {
     const hookState = getHookState(currentIndex++);
+    hookState._value = hookState._value || initialState;
+    const setState = (newValue) => {
+        if(typeof newValue == 'function') {
+            newValue = newValue(hookState._value);
+        }
 
-    if (!hookState._initialized) {
-        hookState._value = [
-            initialState,
-            newState => {
-                if (hookState._value[0] !== newState) {
-                    hookState._value[0] = newState;
-                    currentComponent.setState({});
-                }
-            }
-        ];
+        hookState._value = newValue;
+        enqueueRender(currentComponent);
+    };
 
-        hookState._initialized = true;
-    }
-	
-    return hookState._value;
+    return [hookState._value, setState];
 }
 
 function invokeCleanup(hook) {

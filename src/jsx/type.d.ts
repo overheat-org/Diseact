@@ -1,11 +1,10 @@
-import type {
+import {
 	Embed,
 	Command,
 	SubCommandGroup,
 	Modal,
 	TextInput,
 	SelectMenu,
-	Row,
 	Button,
 	Title,
 	Description,
@@ -26,17 +25,17 @@ import type {
 	Attachment,
 	Option,
 	SubCommand,
-	Opts,
-} from "./elements/entities";
+	Container,
+} from "../elements/entities";
 
 declare global {
 	namespace JSX {
+		type Component = (...args: unknown[]) => Element
 		type Element = { 
 			type: string, 
 			props: any, 
-			children: any
 		};
-		type Node = Element | Element[];
+		type Node = Element[];
 		type IntrinsicElement<T> = T;
 
 		interface IntrinsicElements {
@@ -44,7 +43,6 @@ declare global {
 			textinput: IntrinsicElement<TextInput>;
 			option: IntrinsicElement<Option>;
 			selectmenu: IntrinsicElement<SelectMenu>;
-			row: IntrinsicElement<Row>;
 			button: IntrinsicElement<Button>;
 			embed: IntrinsicElement<Embed>;
 			title: IntrinsicElement<Title>;
@@ -67,7 +65,7 @@ declare global {
 			role: IntrinsicElement<Role>;
 			mentionable: IntrinsicElement<Mentionable>;
 			attachment: IntrinsicElement<Attachment>;
-			opts: IntrinsicElement<Opts>;
+			container: IntrinsicElement<Container>;
 			// TODO: Do poll on JSX
 		}
 	}

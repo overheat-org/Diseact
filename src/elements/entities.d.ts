@@ -2,18 +2,25 @@ import {
 	APISelectMenuDefaultValue,
 	AutocompleteInteraction,
 	BitFieldResolvable,
+	ButtonInteraction,
 	ButtonStyle,
+	ChannelSelectMenuInteraction,
 	ChannelType,
 	ColorResolvable,
 	CommandInteraction,
 	LocalizationMap,
+	MentionableSelectMenuInteraction,
 	MessageFlags,
 	MessageFlagsString,
 	MessageMentionOptions,
+	ModalSubmitInteraction,
+	RoleSelectMenuInteraction,
 	SelectMenuDefaultValueType,
+	StringSelectMenuInteraction,
 	TextInputStyle,
+	UserSelectMenuInteraction,
 } from "discord.js";
-import { SelectMenuVariant } from "..";
+import { SelectMenuVariant } from "../types";
 
 export type Localization = {
 	name: LocalizationMap;
@@ -83,9 +90,11 @@ interface ComponentBased {
 
 export interface Modal extends ComponentBased {
 	title: string;
+	onSubmit?: (interaction: ModalSubmitInteraction) => unknown;
 }
 
 export interface TextInput extends ComponentBased {
+	children?: string;
 	label?: string;
 	style: TextInputStyle;
 	placeholder?: string;
@@ -108,11 +117,8 @@ interface LinkButton extends BaseButton {
 }
 
 interface OtherButton extends ComponentBased, BaseButton {
-	variant:
-	| ButtonStyle.Success
-	| ButtonStyle.Danger
-	| ButtonStyle.Primary
-	| ButtonStyle.Secondary;
+	onClick?(interaction: ButtonInteraction): unknown
+	variant: Exclude<ButtonStyle, ButtonStyle.Link>
 }
 
 export type Button = OtherButton | LinkButton;
@@ -125,32 +131,37 @@ interface BaseSelectMenu extends ComponentBased {
 }
 
 export interface UserSelectMenu extends BaseSelectMenu {
-	variant: SelectMenuVariant.User;
+	isUser: true
 	defaultUsers: string[];
+	onSelect?(interaction: UserSelectMenuInteraction): unknown
 }
 
 export interface ChannelSelectMenu extends BaseSelectMenu {
-	variant: SelectMenuVariant.Channel;
+	isChannel: true
 	defaultChannel: string[];
 	channelTypes: ChannelType[];
+	onSelect?(interaction: ChannelSelectMenuInteraction): unknown
 }
 
 export interface RoleSelectMenu extends BaseSelectMenu {
-	variant: SelectMenuVariant.Role;
+	isRole: true
 	defaultRoles: string[];
+	onSelect?(interaction: RoleSelectMenuInteraction): unknown
 }
 
 export interface MentionableSelectMenu extends BaseSelectMenu {
-	variant: SelectMenuVariant.Mentionable;
+	isMentionable: true
 	defaultValues: (
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.Role>
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.User>
 	)[];
+	onSelect?(interaction: MentionableSelectMenuInteraction): unknown
 }
 
 export interface StringSelectMenu extends BaseSelectMenu {
-	variant: SelectMenuVariant.String;
-	default?: string;
+	isString: true
+	default?: string
+	onSelect?(interaction: StringSelectMenuInteraction): unknown
 }
 
 export type SelectMenu =
@@ -167,8 +178,6 @@ export interface Option {
 	emoji?: string;
 	default?: boolean;
 }
-
-export interface Row { }
 
 export interface Embed {
 	color?: ColorResolvable;
@@ -208,17 +217,21 @@ export interface OptsBase {
 	tts?: boolean;
 	content?: string;
 	allowedMentions?: MessageMentionOptions;
+	children?: JSX.Node
 }
+
 export interface MessageOpts extends OptsBase {
 	isMessage: true;
 	isInteraction?: never;
 	nonce?: string | number;
 	enforceNonce?: boolean;
 }
+
 export interface InteractionOpts extends OptsBase {
 	isInteraction: true;
 	isMessage?: never;
 	ephemeral?: boolean;
 	fetchReply?: boolean;
 }
-export type Opts = MessageOpts | InteractionOpts;
+
+export type Container = MessageOpts | InteractionOpts;
