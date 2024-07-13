@@ -1,6 +1,7 @@
-import Diseact, { Localization } from "../types";
+import { CommandInteraction } from "discord.js";
+import Diseact from "..";
 
-const localization: Localization = {
+const localization = {
 	name: {
 		"pt-BR": "membro"
 	},
@@ -11,12 +12,16 @@ const localization: Localization = {
 
 
 export default (
-	<command name="member" description="" localization={localization}>
+	<command name="member" description="" localizations={localization}>
 		<subcommand name="add">
-			<string id="hi" />
-
+			<string name="myString " autocomplete={() => {}} optional/>
 			{(interaction) => {
-				interaction
+				interaction.reply("adding")
+			}}
+		</subcommand>
+		<subcommand name="remove">
+			{(interaction) => {
+				interaction.reply("removing")
 			}}
 		</subcommand>
 	</command>

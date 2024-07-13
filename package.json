@@ -1,32 +1,37 @@
 {
   "name": "diseact",
-  "version": "1.1.0",
-  "description": "A package to make Discord Embeds and Components using JSX",
+  "version": "2.0.0",
+  "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "keywords": [
     "discord.js",
     "discord",
     "react",
-    "jsx"
+    "jsx",
+    "embed",
+    "slash",
+    "command"
   ],
   "scripts": {
-    "test": "cd test && jest"
+    "test": "cls && cd test && tsx --tsconfig ./tsconfig.json --env-file=.env --test"
   },
-  "main": "lib/index.js",
-  "types": "types/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/types.d.ts",
   "author": {
     "name": "</Nexus_Prime>",
     "url": "https://nexusprime.vercel.app/"
   },
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^20.11.24",
-    "discord.js": "^14.14.1",
-    "typescript": "^5.3.3"
+    "chalk": "^4.1.2",
+    "discord.js": "^14.15.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "dotenv": "^16.4.5",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2"
+    "tsx": "^4.16.2",
+    "typescript": "^5.3.3"
   }
 }
