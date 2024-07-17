@@ -1,12 +1,12 @@
 # Diseact
 
-Diseact is a JavaScript library for create components/embeds/commands of Discord API using JSX.
+Diseact is a Javascript library created to easily build components, embeds and commands from Discord API using JSX.
 
-# Why is useful?
+# Why it's useful?
 
-- In case you trying create a embedded interface, using buttons to navegate for each pages of embed.
+- In case you're trying to create a embedded interface, using buttons to navigate through each page of the embed.
 - To union your components, embeds and other props in the same context.
-- To organize better your commands, and componentize us (separating subcommands in other files).
+- To organize better your commands, and componentize it (separating subcommands in other files).
 
 Use:
 ```tsx
@@ -20,7 +20,7 @@ const modal = <modal id='myModal' title='My Modal'>
 	</textinput>
 </modal>
 ```
-instead:
+Instead:
 ```tsx
 const modal = new ModalBuilder()
 	.setCustomId('myModal')
@@ -41,7 +41,7 @@ const secondActionRow = new ActionRowBuilder().addComponents(hobbiesInput);
 
 modal.addComponents(firstActionRow, secondActionRow);
 ```
-# How to use
+# How to Use
 1- Install the package on your project:
 ```
 npm i diseact
@@ -65,11 +65,11 @@ const myEmbed = <embed>
 </embed>
 ```
 
-see the documentation below:
+See the Documentation below:
 
 # Embeds
 
-For start, we can learn about create a embed. Downside, is all possibilities you can do using Diseact to create a embed.
+To start, we can learn about creating a embed.
 
 ```jsx
 const myEmbed = (
@@ -91,9 +91,9 @@ const myEmbed = (
 );
 ```
 
-But we have a problem. JSX Elements need the render function and be involved with a component to works.
+But we have a problem. JSX Elements need the render function and need to be involved with a component to work.
 
-### Weird Way to use JSX Elements of Diseact
+### Weird way to use JSX Elements of Diseact
 
 You can use Diseact parser function to transform JSX Element in Discord Element.
 
@@ -109,7 +109,7 @@ const embed = Diseact.parse(
 
 # Components
 
-We can make a functional component returning a message container. And inside of our container, we can place embeds, buttons or selectmenus. You don't need to pass a action row, Diseact organize components in action row by type.
+We can make a functional component returning a message container. And inside of our container, we can place embeds, buttons or select menus. You don't need to pass a action row, Diseact organize components in action row by type.
 
 ```js
 function MyComponent() {
@@ -134,7 +134,7 @@ function MyComponent() {
 
 Some properties are showed, but have more.
 
-> Id is optional in every discord component. If you don't put an id, Diseact will generate a unique id and use as custom id.
+> ID is optional in every Discord component. If you don't provide an ID, Diseact will generate a unique ID and use as custom ID.
 
 # Hooks
 
@@ -179,7 +179,7 @@ function Counter() {
 }
 ```
 
-Note button have `onClick` property, expecting a function with a interaction argument, like it:
+Note: the button have a `onClick` property, expecting a function with a interaction argument, like it:
 
 ```js
 const handleButton = (interaction) => {
@@ -187,11 +187,11 @@ const handleButton = (interaction) => {
 };
 ```
 
-You can return a `string` or `InteractionReplyOptions`. Diseact will send it back with `interaction.reply`. If you not insert a return value, the interaction will be responding with void value, for discord not send an error. Like `<button/>`, `<modal/>` and `<selectmenu/>` have functions in parameters too. `OnSubmit` for modal, and `OnSelect` for selectmenu. Working the same way of `OnClick`.
+You can return a `string` or `InteractionReplyOptions`. Diseact will send it back with `interaction.reply`. If you don't insert a return value, the interaction will be replied with a void value, to avoid Discord sending errors. Like `<button/>`, `<modal/>` and `<selectmenu/>` have functions in parameters too. `OnSubmit` for modal, and `OnSelect` for select menu. Working the same way of `OnClick`.
 
 # Rendering
 
-To render our component we can do:
+To render our component, we can do:
 
 ```js
 Diseact.render(channel, <MyComponent />);
