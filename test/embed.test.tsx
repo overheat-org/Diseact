@@ -3,7 +3,7 @@ import { EmbedBuilder } from 'discord.js';
 
 test("generate embed with JSX", done => {
 	const _embed_jsx = (
-		<embed color='White'>
+		<embed color='White' >
 			<author url='https://example.com/' iconURL='https://example.com/'>John</author>
 			<title>My Embed</title>
 			<description>Testing this embed</description>
@@ -12,7 +12,7 @@ test("generate embed with JSX", done => {
 			</fields>
 			<image>https://example.com/</image>
 			<thumbnail>https://example.com/</thumbnail>
-			<footer iconURL='https://example.com/'>footer</footer>
+			<footer iconURL='https://example.com/' >footer</footer>
 		</embed>
 	);
 

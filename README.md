@@ -1,6 +1,13 @@
+# Diseact
+
 Diseact is a JavaScript library for create components/embeds/commands of Discord API using JSX.
 
-# Why?
+# Why is useful?
+
+- In case you trying create a embedded interface, using buttons to navegate for each pages of embed.
+- To union your components, embeds and other props in the same context.
+- To organize better your commands, and componentize us (separating subcommands in other files).
+
 Use:
 ```tsx
 const modal = <modal id='myModal' title='My Modal'>
@@ -57,130 +64,139 @@ const myEmbed = <embed>
 	<title>Hello from Diseact!</title>
 </embed>
 ```
----
-# Documentation
-## JSX Elements
 
-#### `<modal>`
+see the documentation below:
 
-Creates a modal component.
+# Embeds
 
-- Props:
-  - `id`: string
-  - `title`: string
-- Children: `<row>`
-#### `<textinput>`
+For start, we can learn about create a embed. Downside, is all possibilities you can do using Diseact to create a embed.
 
-Creates a text input component.
+```jsx
+const myEmbed = (
+  <embed color="White" timestamp={new Date()}>
+    <author url="https://example.com/" iconURL="https://example.com/">
+      John
+    </author>
+    <title>My Embed</title>
+    <description>Testing this embed</description>
+    <fields>
+      <field name="tested" inline>
+        true
+      </field>
+    </fields>
+    <image>https://example.com/</image>
+    <thumbnail>https://example.com/</thumbnail>
+    <footer iconURL="https://example.com/">footer</footer>
+  </embed>
+);
+```
 
-- Props:
-  - `id`: string
-  - `label`: string (optional)
-  - `style`: DJS.TextInputStyle
-  - `placeholder`: string (optional)
-  - `minLength`: number (optional)
-  - `maxLength`: number (optional)
-  - `value`: string (optional)
-  - `required`: boolean (optional)
-- Children: string
+But we have a problem. JSX Elements need the render function and be involved with a component to works.
 
-#### `<option>`
+### Weird Way to use JSX Elements of Diseact
 
-Creates an option component.
+You can use Diseact parser function to transform JSX Element in Discord Element.
 
-- Props:
-  - `value`: string
-  - `description`: string (optional)
-  - `label`: string (optional)
-  - `emoji`: string (optional)
-  - `default`: boolean (optional)
-- Children: string
+```jsx
+const embed = Diseact.parse(
+  <embed color="White" timestamp={new Date()}>
+    ...
+  </embed>
+);
 
-#### `<selectmenu>`
+// output: [EmbedBuilder]
+```
 
-Creates a select menu component.
+# Components
 
-- Props: Refer to `UnionSelectMenu` type.
-- Children: string | `<option>`
+We can make a functional component returning a message container. And inside of our container, we can place embeds, buttons or selectmenus. You don't need to pass a action row, Diseact organize components in action row by type.
 
-#### `<row>`
+```js
+function MyComponent() {
+  <container isMessage tts enforceNonce allowedMentions={{}}>
+    <embed>
+      <title>My Component</title>
+    </embed>
 
-Creates a row component.
-- Children: `<button>` | `<selectmenu>` | `<textinput>`
+    <button isPrimary label="My button" />
 
-#### `<button>`
+    <selectmenu isString max={1} min={1} placeholder="Select anything">
+      <option value="cat" label="Cat">
+        It's a cat
+      </option>
+      <option value="dog" label="Dog">
+        It's a dog
+      </option>
+    </selectmenu>
+  </container>;
+}
+```
 
-Creates a button component.
+Some properties are showed, but have more.
 
-- Props:
-  - `id`: string
-  - `disabled`: boolean (optional)
-  - `emoji`: string (optional)
-  - `label`: string (optional)
-  - Variant: Can be of type `DJS.ButtonStyle.Link`, `DJS.ButtonStyle.Danger`, `DJS.ButtonStyle.Primary`, or `DJS.ButtonStyle.Secondary`
-- Children: string
+> Id is optional in every discord component. If you don't put an id, Diseact will generate a unique id and use as custom id.
 
-#### `<embed>`
+# Hooks
 
-Creates an embed component.
+Diseact have two hooks, like `useEffect` and `useState`, you can do something like:
 
-- Props:
-  - `color`: DJS.ColorResolvable
-  - `timestamp`: Date | number
-- Children: `<title>` | `<description>` | `<author>` | `<image>` | `<thumbnail>` | `<footer>` | `<field>` | `<fields>`
+```js
+function Counter() {
+  const [count, setCount] = Diseact.useState(0);
 
-#### `<title>`
+  const handleIncrement = () => {
+    setCount((c) => c + 1);
+  };
 
-Creates a title component.
+  const handleDecrement = () => {
+    setCount((c) => c - 1);
+  };
 
-- Children: string
+  return (
+    <container isMessage>
+      <embed>
+        <title>Counter</title>
+        <description>Count: {count}</description>
+      </embed>
 
-#### `<description>`
+      <button
+        isSuccess
+        id="increment"
+        label="Add"
+        emoji="➕"
+        onClick={handleIncrement}
+      />
 
-Creates a description component.
+      <button
+        isDanger
+        id="decrement"
+        label="Reduce"
+        emoji="➖"
+        onClick={handleDecrement}
+      />
+    </container>
+  );
+}
+```
 
-- Children: string
+Note button have `onClick` property, expecting a function with a interaction argument, like it:
 
-#### `<author>`
+```js
+const handleButton = (interaction) => {
+  return "Success! Button has been pressed";
+};
+```
 
-Creates an author component.
+You can return a `string` or `InteractionReplyOptions`. Diseact will send it back with `interaction.reply`. If you not insert a return value, the interaction will be responding with void value, for discord not send an error. Like `<button/>`, `<modal/>` and `<selectmenu/>` have functions in parameters too. `OnSubmit` for modal, and `OnSelect` for selectmenu. Working the same way of `OnClick`.
 
-- Props:
-  - `iconURL`: string (optional)
-  - `url`: string (optional)
-- Children: string
+# Rendering
 
-#### `<image>`
+To render our component we can do:
 
-Creates an image component.
+```js
+Diseact.render(channel, <MyComponent />);
+```
 
-- Children: URL
+The first parameter on render function, is a target. This property can be a `TextChannel`, `Message` or `CommandInteraction`. The second parameter, is a component to render. Easy peazy!
 
-#### `<thumbnail>`
-
-Creates a thumbnail component.
-
-- Children: URL
-
-#### `<footer>`
-
-Creates a footer component.
-
-- Props:
-  - `iconURL`: string (optional)
-- Children: string
-
-#### `<field>`
-
-Creates a field component.
-
-- Props:
-  - `name`: string
-  - `inline`: boolean (optional)
-- Children: string
-
-#### `<fields>`
-
-Creates a fields component.
-
----
+In first render, Diseact will use `channel.send`, `message.channel.send` or `interaction.reply` to send the first message. After, for each render, the message is edited with `message.edit` or `interaction.editReply`.

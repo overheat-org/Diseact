@@ -1,7 +1,6 @@
 import { CommandInteraction, Message, TextChannel } from "discord.js";
 import { parseElement } from "./elements/parser";
 import { flushEffects, setCurrentComponent, setCurrentIndex } from "./component/hooks";
-import { log } from "./utils";
 import * as collector from './collector';
 
 /**
@@ -46,8 +45,6 @@ export async function evaluate(target, content, first) {
  * @param {JSX.Component} component 
  */
 export async function renderComponent(component, first = false) {
-    log("Rendering component");
-
     setCurrentIndex(0);
     setCurrentComponent(component);
 
