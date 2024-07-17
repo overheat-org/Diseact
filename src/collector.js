@@ -14,6 +14,20 @@ export function Run(client) {
     client.on('interactionCreate', interaction => {
         if(!interaction.isMessageComponent()) return;
 
-        listeners.get(interaction.customId)?.(interaction);
+        const fn = listeners.get(interaction.customId)
+        if(!fn) return;
+
+        const response = fn(interaction);
+
+        switch (typeof response) {
+            case 'object':
+            case 'string': 
+                interaction.reply(response);
+                break;
+
+            case 'undefined':
+                interaction.deferUpdate();
+                break;
+        }
     })
 }
