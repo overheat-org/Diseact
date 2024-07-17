@@ -1,4 +1,4 @@
-import Diseact from '../';
+import Diseact, { useState, useEffect } from '../';
 import { EmbedBuilder } from 'discord.js';
 
 test("generate embed with JSX", done => {
@@ -29,3 +29,17 @@ test("generate embed with JSX", done => {
 	expect(_embed_jsx).toMatchObject(_embed);
 	done()
 });
+
+test("use hooks with JSX embeds", done => {
+	function MyEmbed() {
+		const [color, setColor] = useState("White");
+
+		useEffect(() => {
+			setTimeout(() => setColor('Red'), 5000);
+		}, [])
+		
+		return <embed color={color}>
+		   <description>Testing hook</description>
+		</embed>
+	}
+})
