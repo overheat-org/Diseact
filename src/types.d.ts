@@ -1,5 +1,5 @@
 import './jsx/type';
-import { TextChannel, CommandInteraction, SlashCommandBuilder, Interaction, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder } from "discord.js";
+import { TextChannel, CommandInteraction, SlashCommandBuilder, Interaction, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder, Message } from "discord.js";
 
 export enum SelectMenuVariant {
 	String,
@@ -10,6 +10,7 @@ export enum SelectMenuVariant {
 }
 
 export type RenderTarget = 
+	| Message
 	| TextChannel 
 	| CommandInteraction;
 

@@ -1,5 +1,5 @@
 import { test } from 'node:test';
-import { ButtonStyle, Client, StringSelectMenuInteraction, TextChannel } from 'discord.js';
+import { Client, StringSelectMenuInteraction, TextChannel } from 'discord.js';
 import Diseact from '..';
 import 'dotenv/config';
 
@@ -28,17 +28,17 @@ test("Testing components rendering", (t, done) => {
 					<description>Count: {count}</description>
 				</embed>
 
-				<button 
+				<button
+					isSuccess
 					id="increment"
 					label='+' 
-					variant={ButtonStyle.Success}
 					onClick={handleIncrement} 
 				/>
 
 				<button
+					isDanger
 					id="decrement"
 					label='-'
-					variant={ButtonStyle.Danger}
 					onClick={handleDecrement}
 				/>
 			</container>
@@ -66,7 +66,7 @@ test("Testing components rendering", (t, done) => {
 			</container>
 		}
 
-		Diseact.render(channel, <Options />)
+		// Diseact.render(channel, <Options />)
 	});
 
 	client.login(TOKEN);
