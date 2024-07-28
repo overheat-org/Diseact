@@ -1,4 +1,7 @@
 package-lock.json
 node_modules
-types
 test/.env
+hooks/
+internal/
+jsx-runtime/
+lib/

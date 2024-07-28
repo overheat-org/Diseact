@@ -1,4 +1,4 @@
-import { createElement } from '../src';
+import { createElement } from '../lib';
 
 export {
     createElement,

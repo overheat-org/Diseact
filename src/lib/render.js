@@ -1,5 +1,5 @@
 import { CommandInteraction, Message, TextChannel } from "discord.js";
-import { parseElement } from "./elements/parser";
+import { parseElement } from "../internal/parser";
 import { flushEffects, setCurrentComponent, setCurrentIndex } from "../hooks";
 import * as collector from '../internal/collector';
 
