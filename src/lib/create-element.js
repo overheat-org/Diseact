@@ -1,15 +1,7 @@
-export function createElement(type, props, ...children) {
-	if(typeof children[0] == 'string') {
-		children = [children.join('')];
-	}
+import { parseElement } from '../internal/parser';
 
-	return {
-		type,
-		props: {
-			children: [...children],
-			...props
-		}
-	}
+export function createElement(type, props, ...children) {
+	return parseElement({ type, props, children });
 }
 
 export function Fragment(props) {

@@ -99,8 +99,8 @@ export interface TextInput extends ComponentBased {
 	label?: string;
 	style: TextInputStyle;
 	placeholder?: string;
-	minLength?: number;
-	maxLength?: number;
+	min?: number;
+	max?: number;
 	value?: string;
 	required?: boolean;
 }
@@ -137,12 +137,18 @@ interface DangerButton extends ButtonBased, ComponentBased {
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
+interface PremiumButton extends ButtonBased, ComponentBased {
+	isPremium: true;
+	onClick?(interaction: ButtonInteraction): unknown
+}
+
 export type Button = 
 	| LinkButton
 	| PrimaryButton
 	| SecondaryButton
 	| SuccessButton
-	| DangerButton;
+	| DangerButton
+	| PremiumButton;
 
 interface BaseSelectMenu extends ComponentBased {
 	placeholder: string;

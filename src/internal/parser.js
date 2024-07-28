@@ -1,25 +1,8 @@
-import {
-	InteractionReplyOptions,
-	MessageCreateOptions,
-	EmbedBuilder,
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	TextInputBuilder,
-	BaseSelectMenuBuilder,
-	UserSelectMenuBuilder,
-	ChannelSelectMenuBuilder,
-	RoleSelectMenuBuilder,
-	MentionableSelectMenuBuilder,
-	StringSelectMenuBuilder,
-	StringSelectMenuOptionBuilder,
-} from "discord.js";
-import {
-	CommandBuilder,
-	SubCommandBuilder,
-	SubCommandGroupBuilder,
-} from "../lib/utils";
 import { listeners } from "./collector";
+
+// TODO: fazer os comandos
+// TODO: adicionar o children nas props mapeadas
+// TODO: fazer as polls
 
 function parseCommandOptions(type, data, child) {
 	switch (type) {
@@ -67,43 +50,31 @@ function parseCommandOptions(type, data, child) {
 function parseIntrinsicElement(element) {
 	switch (element.type) {
 		case "container": {
-			const props = element.props;
+			const { isMessage, isInteraction, ...container } = element.props;
 
-			/** @type {InteractionReplyOptions | MessageCreateOptions} */
-			const obj = { embeds: [], components: [] };
+			container.embeds = [];
+			container.components = [];
 
-			for (const p of Object.keys(props)) {
-				if (["isMessage", "isInteraction", "children"].includes(p)) continue;
+			const btnActionRow = { type: 1, components: [] };
+			const selectMenuActionRow = { type: 1, components: [] };
 
-				obj[p] = props[p];
-			}
-
-			const btnActionRow = new ActionRowBuilder();
-			const selectMenuActionRow = new ActionRowBuilder();
-
-			for (const child of props.children) {
+			for (const child of element.children) {
 				const evaluated = parseElement(child);
 
 				switch (true) {
-					case evaluated instanceof EmbedBuilder: {
-						obj.embeds.push(evaluated);
+					case evaluated.$symbol == Symbol.for("embed"): {
+						container.embeds.push(evaluated);
 
 						break;
 					}
-					case evaluated instanceof ButtonBuilder: {
-						btnActionRow.addComponents(evaluated);
-
-						if (evaluated.data.style != ButtonStyle.Link) {
-							const data = evaluated.data;
-							listeners.set(data.custom_id, data.onClick);
-						}
+					case evaluated.type == 2: {
+						btnActionRow.components.push(evaluated);
 
 						break;
 					}
-					case evaluated instanceof BaseSelectMenuBuilder: {
-						selectMenuActionRow.addComponents(evaluated);
-
-						listeners.set(evaluated.data.custom_id, evaluated.data.onSelect);
+					case evaluated.type == 3:
+					case evaluated.type >= 5 && evaluated.type <= 8: {
+						selectMenuActionRow.components.push(evaluated);
 
 						break;
 					}
@@ -113,268 +84,258 @@ function parseIntrinsicElement(element) {
 			}
 
 			if (btnActionRow.components.length > 0) {
-				obj.components.push(btnActionRow);
+				container.components.push(btnActionRow);
 			}
 
 			if (selectMenuActionRow.components.length > 0) {
-				obj.components.push(selectMenuActionRow);
+				container.components.push(selectMenuActionRow);
 			}
 
-			return obj;
+			return container;
 		}
 		case "embed": {
-			const props = element.props;
+			const embed = element.props;
+			embed.$symbol = Symbol.for("embed");
 
-			const embed = new EmbedBuilder();
-
-			if (props.color) embed.setColor(props.color);
-			if (props.timestamp) embed.setTimestamp(props.timestamp);
-
-			for (const child of props.children) {
+			for (const child of element.children) {
 				switch (child.type) {
 					case "title":
-						embed.setTitle(child.props.children[0]);
+						embed.title = child.children.join('');
 						break;
 					case "description":
-						embed.setDescription(child.props.children[0]);
+						embed.description = child.children.join('');
 						break;
 					case "author":
-						embed.setAuthor({
-							name: child.props.children[0],
+						embed.author = {
+							name: child.children.join(''),
 							url: child.props.url,
 							iconURL: child.props.iconURL,
-						});
+						};
 						break;
 					case "image":
-						embed.setImage(child.props.children[0]);
+						embed.image = child.children.join('');
 						break;
 					case "thumbnail":
-						embed.setThumbnail(child.props.children[0]);
+						embed.thumbnail = child.children.join('');
 						break;
 					case "fields":
-						embed.setFields(child.props.children[0]);
+						embed.fields = child.children.join('');
 						break;
 					case "footer":
-						embed.setFooter({
-							text: child.props.children[0],
+						embed.footer = {
+							text: child.children.join(''),
 							iconURL: child.props.iconURL,
-						});
+						};
 						break;
 				}
 			}
 
 			return embed;
 		}
-		case "command": {
-			const props = element.props;
+		// case "command": {
+		// 	const props = element.props;
 
-			const data = new CommandBuilder()
-				.setName(props.name)
-				.setDescription(props.description ?? " ")
-				.setNSFW(props.nsfw ?? false);
+		// 	const data = new CommandBuilder()
+		// 		.setName(props.name)
+		// 		.setDescription(props.description ?? " ")
+		// 		.setNSFW(props.nsfw ?? false);
 
-			if (props.localizations) {
-				data.setNameLocalizations(props.localizations.name);
-				data.setDescriptionLocalizations(props.localizations.description);
-			}
+		// 	if (props.localizations) {
+		// 		data.setNameLocalizations(props.localizations.name);
+		// 		data.setDescriptionLocalizations(props.localizations.description);
+		// 	}
 
-			for (const child of props.children) {
-				if (typeof child == "function") {
-					data.setExecution(child);
+		// 	for (const child of props.children) {
+		// 		if (typeof child == "function") {
+		// 			data.setExecution(child);
 
-					continue;
-				}
+		// 			continue;
+		// 		}
 
-				const parsed = parseElement(child);
+		// 		const parsed = parseElement(child);
 
-				switch (child.type) {
-					case "subcommand": {
-						data.addSubcommand(parsed);
-						break;
-					}
-					case "group": {
-						data.addSubcommandGroup(parsed);
-						break;
-					}
-					default: {
-						parseCommandOptions(child.type, data, child);
-					}
-				}
-			}
+		// 		switch (child.type) {
+		// 			case "subcommand": {
+		// 				data.addSubcommand(parsed);
+		// 				break;
+		// 			}
+		// 			case "group": {
+		// 				data.addSubcommandGroup(parsed);
+		// 				break;
+		// 			}
+		// 			default: {
+		// 				parseCommandOptions(child.type, data, child);
+		// 			}
+		// 		}
+		// 	}
 
-			return data;
-		}
-		case "subcommand": {
-			const props = element.props;
+		// 	return data;
+		// }
+		// case "subcommand": {
+		// 	const props = element.props;
 
-			const data = new SubCommandBuilder()
-				.setName(props.name)
-				.setDescription(props.description ?? " ");
+		// 	const data = new SubCommandBuilder()
+		// 		.setName(props.name)
+		// 		.setDescription(props.description ?? " ");
 
-			if (props.localizations) {
-				data.setNameLocalizations(props.localizations.name);
-				data.setDescriptionLocalizations(props.localizations.description);
-			}
+		// 	if (props.localizations) {
+		// 		data.setNameLocalizations(props.localizations.name);
+		// 		data.setDescriptionLocalizations(props.localizations.description);
+		// 	}
 
-			for (const child of props.children) {
-				if (typeof child == "function") {
-					data.setExecution(child);
-				} else {
-					parseCommandOptions(child.type, data, child);
-				}
-			}
+		// 	for (const child of props.children) {
+		// 		if (typeof child == "function") {
+		// 			data.setExecution(child);
+		// 		} else {
+		// 			parseCommandOptions(child.type, data, child);
+		// 		}
+		// 	}
 
-			return data;
-		}
-		case "group": {
-			const props = element.props;
+		// 	return data;
+		// }
+		// case "group": {
+		// 	const props = element.props;
 
-			const data = new SubCommandGroupBuilder()
-				.setName(props.name)
-				.setDescription(props.description ?? " ");
+		// 	const data = new SubCommandGroupBuilder()
+		// 		.setName(props.name)
+		// 		.setDescription(props.description ?? " ");
 
-			if (props.localizations) {
-				data.setNameLocalizations(props.localizations.name);
-				data.setDescriptionLocalizations(props.localizations.description);
-			}
+		// 	if (props.localizations) {
+		// 		data.setNameLocalizations(props.localizations.name);
+		// 		data.setDescriptionLocalizations(props.localizations.description);
+		// 	}
 
-			for (const child of props.children) {
-				data.addSubcommand(parseElement(child));
-			}
+		// 	for (const child of props.children) {
+		// 		data.addSubcommand(parseElement(child));
+		// 	}
 
-			return data;
-		}
+		// 	return data;
+		// }
 		case "button": {
-			const props = element.props;
-			const btn = new ButtonBuilder()
-				.setLabel(props.label ?? props.children)
+			const { 
+				isPrimary, isSecondary, isDanger, isSuccess, isLink, isPremium,
+				onClick, id, ...button 
+			} = element.props;
+			
+			id && (button.custom_id = id);
 
 			switch (true) {
-				case props.isPrimary:
-					btn.setStyle(ButtonStyle.Primary);
+				case isPrimary:
+					button.style = 1;
 					break;
-				case props.isSecondary:
-					btn.setStyle(ButtonStyle.Secondary);
+				case isSecondary:
+					button.style = 2;
 					break;
-				case props.isDanger:
-					btn.setStyle(ButtonStyle.Danger);
+				case isSuccess:
+					button.style = 3;
 					break;
-				case props.isSuccess:
-					btn.setStyle(ButtonStyle.Success);
+				case isDanger:
+					button.style = 4;
 					break;
-				case props.isLink:
-					btn.setStyle(ButtonStyle.Link);
+				case isLink:
+					button.style = 5;
 					break;
-				default: throw new Error('Button style not found')
+				case isPremium:
+					button.style = 6;
+					break;
+				default: throw new Error('Button style not found');
 			}
 
-			if (props.disabled != undefined) {
-				btn.setDisabled(props.disabled);
+			if (button.style != 5) {
+				listeners.set(id, onClick);
 			}
 
-			if (props.emoji) {
-				btn.setEmoji(props.emoji);
-			}
-
-			if (props.variant != ButtonStyle.Link) {
-				Object.assign(btn.data, { onClick: props.onClick });
-			}
-
-			if (props.variant == ButtonStyle.Link) {
-				btn.setURL(props.url);
-			} else {
-				btn.setCustomId(props.id);
-			}
-
-			return btn;
+			return button;
 		}
 		case "selectmenu": {
-			const props = element.props;
+			const { 
+				isUser, isChannel, isRole, isMentionable, isString,
+				defaultUsers, defaultChannels, defaultRoles, defaultMentionables,
+				channelTypes, onSelect, max, min, id, ...selectmenu
+			} = element.props;
+			const defaultValues = defaultUsers ?? defaultChannels ?? defaultRoles ?? defaultMentionables;
 
-			const selectMenu = (() => {
-				switch (true) {
-					case props.isUser:
-						return new UserSelectMenuBuilder().setDefaultUsers(
-							props.defaultUsers
-						);
+			id && (selectmenu.custom_id = id);
+			max && (selectmenu.max_values = max);
+			min && (selectmenu.min_values = min);
+			defaultValues && (selectmenu.default_values = defaultValues);
+			channelTypes && (selectmenu.channel_types = channelTypes);
 
-					case props.isChannel:
-						return new ChannelSelectMenuBuilder()
-							.setChannelTypes(props.channelTypes)
-							.setDefaultChannels(props.defaultChannel);
+			listeners.set(id, onSelect);
 
-					case props.isRole:
-						return new RoleSelectMenuBuilder().setDefaultRoles(
-							props.defaultRoles
-						);
+			switch (true) {
+				case isString:
+					selectmenu.type = 3; 
+					selectmenu.options = [];
+					break;
 
-					case props.isMentionable:
-						return new MentionableSelectMenuBuilder().setDefaultValues(
-							props.defaultValues
-						);
+				case isUser:
+					selectmenu.type = 5; 
+					break;
 
-					case props.isString:
-						return new StringSelectMenuBuilder();
+				case isRole:
+					selectmenu.type = 6; 
+					break;
 
-					default:
-						throw new Error("Select Menu variant invalid");
-				}
-			})();
+				case isMentionable:
+					selectmenu.type = 7; 
+					break;
 
-			for (const child of props.children) {
+				case isChannel:
+					selectmenu.type = 8; 
+					break;
+
+				default:
+					throw new Error("Select Menu variant invalid");
+			}
+
+			for (const child of element.children) {
 				if (child.type != "option") {
 					throw new Error(`Cannot use ${child.type} inside a selectmenu`);
-				} else {
-					const props = child.props;
-					const data = new StringSelectMenuOptionBuilder({
-						...child.props,
-						label: child.props.label ?? child.children,
-					});
+				} 
 
-					data
-						.setDescription(props.description ?? props.children[0])
-						.setLabel(props.label)
-						.setValue(props.value);
+				const option = child.props;
 
-					if (props.default) data.setDefault(props.default);
-					if (props.emoji) data.setEmoji(props.emoji);
-
-					selectMenu.addOptions(data);
-				}
+				selectmenu.options.push(option);
 			}
 
-			selectMenu
-				.setCustomId(props.id)
-				.setDisabled(props.disabled ?? false)
-				.setPlaceholder(props.placeholder);
-
-			if (props.max) {
-				selectMenu.setMaxValues(props.max);
-			}
-
-			if (props.min) {
-				selectMenu.setMinValues(props.min);
-			}
-
-			Object.assign(selectMenu.data, { onSelect: props.onSelect });
-
-			return selectMenu;
+			return selectmenu;
 		}
 		case "textinput": {
-			const props = element.props;
+			const { isParagraph, isShort, max, min, id, ...textinput } = element.props;
 
-			return new TextInputBuilder({
-				...props,
-				label: props.label ?? props.children,
-			});
+			id && (textinput.custom_id = id);
+			max && (textinput.max_length = max);
+			min && (textinput.min_length = min);
+
+			switch (true) {
+				case isShort:
+					textinput.style = 1;
+					break;
+				case isParagraph:
+					textinput.style = 2;
+					break;
+				default: throw new Error('TextInput style not found');
+			}
+
+			return textinput;
 		}
 		case "modal": {
-			const modal = new ModalBuilder({ ...props });
+			const { id, ...modal } = element.props;
 
-			// TODO: MAKE THIS
-			// for(const child of children) {
-			// 	modal.addComponents(child as ActionRowBuilder<TextInputBuilder>)
-			// }
+			modal.components = [];
+
+			const textRow = { type: 1, components: [] };
+
+			for(const child of element.children) {
+				const evaluated = parseElement(child);
+
+				textRow.components.push(evaluated);
+			}
+
+			if (textRow.components.length > 0) {
+				modal.components.push(textRow);
+			}
 
 			return modal;
 		}
