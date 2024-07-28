@@ -165,7 +165,7 @@ export interface UserSelectMenu extends BaseSelectMenu {
 
 export interface ChannelSelectMenu extends BaseSelectMenu {
 	isChannel: true
-	defaultChannel: string[]
+	defaultChannels: string[]
 	channelTypes: ChannelType[]
 	onSelect?(interaction: ChannelSelectMenuInteraction): unknown
 }
@@ -178,7 +178,7 @@ export interface RoleSelectMenu extends BaseSelectMenu {
 
 export interface MentionableSelectMenu extends BaseSelectMenu {
 	isMentionable: true
-	defaultValues: (
+	defaultMentionables: (
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.Role>
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.User>
 	)[];
