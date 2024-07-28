@@ -18,8 +18,8 @@ import {
 	CommandBuilder,
 	SubCommandBuilder,
 	SubCommandGroupBuilder,
-} from "../utils";
-import { listeners } from "../collector";
+} from "../lib/utils";
+import { listeners } from "./collector";
 
 function parseCommandOptions(type, data, child) {
 	switch (type) {

@@ -1,13 +1,8 @@
 import { CommandInteraction, Message, TextChannel } from "discord.js";
 import { parseElement } from "./elements/parser";
-import { flushEffects, setCurrentComponent, setCurrentIndex } from "./component/hooks";
-import * as collector from './collector';
+import { flushEffects, setCurrentComponent, setCurrentIndex } from "../hooks";
+import * as collector from '../internal/collector';
 
-/**
- * @param {Target} target 
- * @param {ReturnType<typeof parseElement>} content 
- * @param {boolean} first 
- */
 export async function evaluate(target, content, first) {
     switch (true) {
         case target instanceof TextChannel: {

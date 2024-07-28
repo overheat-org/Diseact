@@ -1,5 +1,5 @@
-import { renderComponent } from "../render";
-import { defer } from "../utils";
+import { renderComponent } from "../lib/render";
+import { defer } from "../lib/utils";
 
 let rerenderQueue = new Array();
 
