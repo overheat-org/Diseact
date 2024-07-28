@@ -9,6 +9,7 @@
           "modules": "commonjs"
         }
       ]
-    ]
+    ],
+    "plugins": ["@babel/plugin-transform-runtime"]
   }
   
