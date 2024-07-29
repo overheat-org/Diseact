@@ -26,7 +26,7 @@ import {
 	Option,
 	SubCommand,
 	Container,
-} from "../src/entities";
+} from "../lib/entities";
 
 declare global {
 	namespace JSX {

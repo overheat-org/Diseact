@@ -55,25 +55,22 @@ export interface OptionBased extends Omit<CommandBased, "children"> {
 	optional?: boolean;
 }
 
-export interface CanCompleteOption extends OptionBased {
+export interface String extends OptionBased {
+	max?: number;
+	min?: number;
 	autocomplete?: (interaction: AutocompleteInteraction) => unknown;
-}
-
-export interface String extends CanCompleteOption {
-	maxLength?: number;
-	minLength?: number;
 }
 
 export interface Boolean extends OptionBased { }
 
 export interface Number extends OptionBased {
-	maxValue?: number;
-	minValue?: number;
+	max?: number;
+	min?: number;
 }
 
 export interface Integer extends OptionBased {
-	maxValue?: number;
-	minValue?: number;
+	max?: number;
+	min?: number;
 }
 
 export interface Channel extends OptionBased { }
