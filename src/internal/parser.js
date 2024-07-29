@@ -1,52 +1,8 @@
+import { generateCustomId } from "../lib/utils";
 import { listeners } from "./collector";
 
-// TODO: fazer os comandos
-// TODO: adicionar o children nas props mapeadas
 // TODO: fazer as polls
 
-function parseCommandOptions(type, data, child) {
-	switch (type) {
-		case "string":
-			data.addStringOption(child.data);
-			break;
-		case "boolean":
-			data.addBooleanOption(child.data);
-			break;
-
-		case "channel":
-			data.addChannelOption(child.data);
-			break;
-
-		case "integer":
-			data.addIntegerOption(child.data);
-			break;
-
-		case "number":
-			data.addNumberOption(child.data);
-			break;
-
-		case "user":
-			data.addUserOption(child.data);
-			break;
-
-		case "role":
-			data.addRoleOption(child.data);
-			break;
-
-		case "mentionable":
-			data.addMentionableOption(child.data);
-			break;
-
-		case "attachment":
-			data.addAttachmentOption(child.data);
-			break;
-	}
-}
-
-/**
- * @param {JSX.Element} element
- * @returns
- */
 function parseIntrinsicElement(element) {
 	switch (element.type) {
 		case "container": {
@@ -59,22 +15,20 @@ function parseIntrinsicElement(element) {
 			const selectMenuActionRow = { type: 1, components: [] };
 
 			for (const child of element.children) {
-				const evaluated = parseElement(child);
-
 				switch (true) {
-					case evaluated.$symbol == Symbol.for("embed"): {
-						container.embeds.push(evaluated);
+					case child.$symbol == Symbol.for("embed"): {
+						container.embeds.push(child);
 
 						break;
 					}
-					case evaluated.type == 2: {
-						btnActionRow.components.push(evaluated);
+					case child.type == 2: {
+						btnActionRow.components.push(child);
 
 						break;
 					}
-					case evaluated.type == 3:
-					case evaluated.type >= 5 && evaluated.type <= 8: {
-						selectMenuActionRow.components.push(evaluated);
+					case child.type == 3:
+					case child.type >= 5 && child.type <= 8: {
+						selectMenuActionRow.components.push(child);
 
 						break;
 					}
@@ -93,131 +47,120 @@ function parseIntrinsicElement(element) {
 
 			return container;
 		}
+
+		case "title":
+		case "description":
+		case "image":
+		case "thumbnail":
+		case "fields": return { prop: element.type, value: element.children.join('') }
+		case "author": return { prop: element.type, value: { name: element.children.join(''), url: element.props.url, iconURL: element.props.iconURL }}
+		case "footer": return { prop: element.type, value: { text: element.children.join(''), iconURL: element.props.iconURL }}
 		case "embed": {
 			const embed = element.props;
 			embed.$symbol = Symbol.for("embed");
 
 			for (const child of element.children) {
-				switch (child.type) {
-					case "title":
-						embed.title = child.children.join('');
-						break;
-					case "description":
-						embed.description = child.children.join('');
-						break;
-					case "author":
-						embed.author = {
-							name: child.children.join(''),
-							url: child.props.url,
-							iconURL: child.props.iconURL,
-						};
-						break;
-					case "image":
-						embed.image = child.children.join('');
-						break;
-					case "thumbnail":
-						embed.thumbnail = child.children.join('');
-						break;
-					case "fields":
-						embed.fields = child.children.join('');
-						break;
-					case "footer":
-						embed.footer = {
-							text: child.children.join(''),
-							iconURL: child.props.iconURL,
-						};
-						break;
-				}
+				embed[child.prop] = child.value;
 			}
 
 			return embed;
 		}
-		// case "command": {
-		// 	const props = element.props;
 
-		// 	const data = new CommandBuilder()
-		// 		.setName(props.name)
-		// 		.setDescription(props.description ?? " ")
-		// 		.setNSFW(props.nsfw ?? false);
+		case "string":
+		case "boolean":
+		case "channel":
+		case "user":
+		case "role":
+		case "mentionable":
+		case "attachment": {
+			const { optional, max, min, ...option } = element.props;
 
-		// 	if (props.localizations) {
-		// 		data.setNameLocalizations(props.localizations.name);
-		// 		data.setDescriptionLocalizations(props.localizations.description);
-		// 	}
+			option.required = optional ? !optional : true;
+			max && (option.max_length = max);
+			min && (option.min_length = min);
 
-		// 	for (const child of props.children) {
-		// 		if (typeof child == "function") {
-		// 			data.setExecution(child);
+			return option;
+		}
 
-		// 			continue;
-		// 		}
+		case "number":
+		case "integer": {
+			const { optional, max, min, ...option } = element.props;
 
-		// 		const parsed = parseElement(child);
+			option.required = optional ? !optional : true;
+			max && (option.max_value = max);
+			min && (option.min_value = min);
 
-		// 		switch (child.type) {
-		// 			case "subcommand": {
-		// 				data.addSubcommand(parsed);
-		// 				break;
-		// 			}
-		// 			case "group": {
-		// 				data.addSubcommandGroup(parsed);
-		// 				break;
-		// 			}
-		// 			default: {
-		// 				parseCommandOptions(child.type, data, child);
-		// 			}
-		// 		}
-		// 	}
+			return option;
+		}
+		
+		case "command": {
+			const command = element.props;
+			if (!command.description) command.description = " ";
+			command.options = [];
 
-		// 	return data;
-		// }
-		// case "subcommand": {
-		// 	const props = element.props;
+			if (props.localizations) {
+				command.name_localizations = command.localizations.name;
+				command.description_localizations = command.localizations.description;
+			}
 
-		// 	const data = new SubCommandBuilder()
-		// 		.setName(props.name)
-		// 		.setDescription(props.description ?? " ");
+			for (const child of command.children) {
+				if (typeof child == "function") {
+					command.run = child;
 
-		// 	if (props.localizations) {
-		// 		data.setNameLocalizations(props.localizations.name);
-		// 		data.setDescriptionLocalizations(props.localizations.description);
-		// 	}
+					continue;
+				}
 
-		// 	for (const child of props.children) {
-		// 		if (typeof child == "function") {
-		// 			data.setExecution(child);
-		// 		} else {
-		// 			parseCommandOptions(child.type, data, child);
-		// 		}
-		// 	}
+				command.options.push(child);
+			}
 
-		// 	return data;
-		// }
-		// case "group": {
-		// 	const props = element.props;
+			return command;
+		}
+		case "subcommand": {
+			const subcommand = element.props;
+			if (!subcommand.description) subcommand.description = " ";
+			subcommand.options = [];
 
-		// 	const data = new SubCommandGroupBuilder()
-		// 		.setName(props.name)
-		// 		.setDescription(props.description ?? " ");
+			if (subcommand.localizations) {
+				subcommand.name_localizations = subcommand.localizations.name;
+				subcommand.description_localizations = subcommand.localizations.description;
+			}
 
-		// 	if (props.localizations) {
-		// 		data.setNameLocalizations(props.localizations.name);
-		// 		data.setDescriptionLocalizations(props.localizations.description);
-		// 	}
+			for (const child of subcommand.children) {
+				if (typeof child == "function") {
+					subcommand.run = child;
 
-		// 	for (const child of props.children) {
-		// 		data.addSubcommand(parseElement(child));
-		// 	}
+					continue;
+				}
 
-		// 	return data;
-		// }
+				subcommand.options.push(child);
+			}
+
+			return data;
+		}
+		case "group": {
+			const group = element.props;
+			if (!group.description) subcommand.description = " ";
+			group.options = [];
+
+			if (group.localizations) {
+				group.name_localizations = group.localizations.name;
+				group.description_localizations = group.localizations.description;
+			}
+
+			for (const child of group.children) {
+				group.options.push(child);
+			}
+
+			return data;
+		}
 		case "button": {
-			const { 
+			const {
 				isPrimary, isSecondary, isDanger, isSuccess, isLink, isPremium,
-				onClick, id, ...button 
+				onClick, id, ...button
 			} = element.props;
-			
-			id && (button.custom_id = id);
+
+			button.custom_id = id ? id : generateCustomId('button');
+			button.type = 2;
 
 			switch (true) {
 				case isPrimary:
@@ -242,47 +185,47 @@ function parseIntrinsicElement(element) {
 			}
 
 			if (button.style != 5) {
-				listeners.set(id, onClick);
+				listeners.set(button.custom_id, onClick);
 			}
 
 			return button;
 		}
 		case "selectmenu": {
-			const { 
+			const {
 				isUser, isChannel, isRole, isMentionable, isString,
 				defaultUsers, defaultChannels, defaultRoles, defaultMentionables,
 				channelTypes, onSelect, max, min, id, ...selectmenu
 			} = element.props;
 			const defaultValues = defaultUsers ?? defaultChannels ?? defaultRoles ?? defaultMentionables;
 
-			id && (selectmenu.custom_id = id);
+			selectmenu.custom_id = id ? id : generateCustomId('selectmenu');
 			max && (selectmenu.max_values = max);
 			min && (selectmenu.min_values = min);
 			defaultValues && (selectmenu.default_values = defaultValues);
 			channelTypes && (selectmenu.channel_types = channelTypes);
 
-			listeners.set(id, onSelect);
+			listeners.set(selectmenu.custom_id, onSelect);
 
 			switch (true) {
 				case isString:
-					selectmenu.type = 3; 
+					selectmenu.type = 3;
 					selectmenu.options = [];
 					break;
 
 				case isUser:
-					selectmenu.type = 5; 
+					selectmenu.type = 5;
 					break;
 
 				case isRole:
-					selectmenu.type = 6; 
+					selectmenu.type = 6;
 					break;
 
 				case isMentionable:
-					selectmenu.type = 7; 
+					selectmenu.type = 7;
 					break;
 
 				case isChannel:
-					selectmenu.type = 8; 
+					selectmenu.type = 8;
 					break;
 
 				default:
@@ -292,7 +235,7 @@ function parseIntrinsicElement(element) {
 			for (const child of element.children) {
 				if (child.type != "option") {
 					throw new Error(`Cannot use ${child.type} inside a selectmenu`);
-				} 
+				}
 
 				const option = child.props;
 
@@ -301,10 +244,13 @@ function parseIntrinsicElement(element) {
 
 			return selectmenu;
 		}
+		case "option": {
+			return element;
+		}
 		case "textinput": {
 			const { isParagraph, isShort, max, min, id, ...textinput } = element.props;
 
-			id && (textinput.custom_id = id);
+			textinput.custom_id = id ? id : generateCustomId('textinput');
 			max && (textinput.max_length = max);
 			min && (textinput.min_length = min);
 
@@ -323,14 +269,13 @@ function parseIntrinsicElement(element) {
 		case "modal": {
 			const { id, ...modal } = element.props;
 
+			modal.custom_id = id ? id : generateCustomId('modal');
 			modal.components = [];
 
 			const textRow = { type: 1, components: [] };
 
-			for(const child of element.children) {
-				const evaluated = parseElement(child);
-
-				textRow.components.push(evaluated);
+			for (const child of element.children) {
+				textRow.components.push(child);
 			}
 
 			if (textRow.components.length > 0) {
@@ -340,7 +285,7 @@ function parseIntrinsicElement(element) {
 			return modal;
 		}
 		default:
-			throw new Error("Unknown element on render");
+			throw new Error("Unknown element on render " + element.type);
 	}
 }
 
@@ -360,5 +305,5 @@ export function parseElement(element) {
 		return parseIntrinsicElement(element);
 	}
 
-	throw new Error("Unknown element on render");
+	throw new Error("Unknown element on render " + element.type);
 }
