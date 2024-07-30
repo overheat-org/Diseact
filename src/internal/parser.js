@@ -94,16 +94,16 @@ function parseIntrinsicElement(element) {
 		}
 		
 		case "command": {
-			const command = element.props;
+			const { localizations, ...command } = element.props;
 			if (!command.description) command.description = " ";
 			command.options = [];
 
-			if (props.localizations) {
-				command.name_localizations = command.localizations.name;
-				command.description_localizations = command.localizations.description;
+			if (localizations) {
+				command.name_localizations = localizations.name;
+				command.description_localizations = localizations.description;
 			}
 
-			for (const child of command.children) {
+			for (const child of element.children) {
 				if (typeof child == "function") {
 					command.run = child;
 
@@ -116,16 +116,16 @@ function parseIntrinsicElement(element) {
 			return command;
 		}
 		case "subcommand": {
-			const subcommand = element.props;
+			const { localizations, ...subcommand } = element.props;
 			if (!subcommand.description) subcommand.description = " ";
 			subcommand.options = [];
 
-			if (subcommand.localizations) {
-				subcommand.name_localizations = subcommand.localizations.name;
-				subcommand.description_localizations = subcommand.localizations.description;
+			if (localizations) {
+				subcommand.name_localizations = localizations.name;
+				subcommand.description_localizations = localizations.description;
 			}
 
-			for (const child of subcommand.children) {
+			for (const child of element.children) {
 				if (typeof child == "function") {
 					subcommand.run = child;
 
@@ -135,7 +135,7 @@ function parseIntrinsicElement(element) {
 				subcommand.options.push(child);
 			}
 
-			return data;
+			return subcommand;
 		}
 		case "group": {
 			const group = element.props;
@@ -147,11 +147,11 @@ function parseIntrinsicElement(element) {
 				group.description_localizations = group.localizations.description;
 			}
 
-			for (const child of group.children) {
+			for (const child of element.children) {
 				group.options.push(child);
 			}
 
-			return data;
+			return group;
 		}
 		case "button": {
 			const {

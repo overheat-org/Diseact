@@ -32,19 +32,15 @@ interface CommandBased {
 	children?: unknown;
 }
 
+type CommandBasedChildren = JSX.Element | ((interaction: CommandInteraction<"cached">) => unknown);
+
 export interface Command extends CommandBased {
 	nsfw?: boolean;
-	children?: (
-		| JSX.Element
-		| ((interaction: CommandInteraction<"cached">) => unknown)
-	)[];
+	children?: CommandBasedChildren | CommandBasedChildren[];
 }
 
 export interface SubCommand extends CommandBased {
-	children?: (
-		| JSX.Element
-		| ((interaction: CommandInteraction<"cached">) => unknown)
-	)[];
+	children?: CommandBasedChildren | CommandBasedChildren[];
 }
 
 export interface SubCommandGroup extends CommandBased {
