@@ -9,61 +9,99 @@ Diseact is a Javascript library created to easily build components, embeds and c
 - Better organize your commands, and componentize them (separating subcommands in other files).
 
 Use:
+
 ```tsx
-const modal = <modal id='myModal' title='My Modal'>
-	<textinput id='favoriteColorInput' style={TextInputStyle.Short}>
-		What's your favorite color?
-	</textinput>
-	
-	<textinput id='hobbiesInput' style={TextInputStyle.Paragraph}>
-		What's some of your favorite hobbies?
-	</textinput>
-</modal>
+const modal = (
+  <modal id="myModal" title="My Modal">
+    <textinput id="favoriteColorInput" style={TextInputStyle.Short}>
+      What's your favorite color?
+    </textinput>
+
+    <textinput id="hobbiesInput" style={TextInputStyle.Paragraph}>
+      What's some of your favorite hobbies?
+    </textinput>
+  </modal>
+);
 ```
+
 Instead:
+
 ```tsx
-const modal = new ModalBuilder()
-	.setCustomId('myModal')
-	.setTitle('My Modal');
+const modal = new ModalBuilder().setCustomId("myModal").setTitle("My Modal");
 
 const favoriteColorInput = new TextInputBuilder()
-	.setCustomId('favoriteColorInput')
-	.setLabel("What's your favorite color?")
-	.setStyle(TextInputStyle.Short);
+  .setCustomId("favoriteColorInput")
+  .setLabel("What's your favorite color?")
+  .setStyle(TextInputStyle.Short);
 
 const hobbiesInput = new TextInputBuilder()
-	.setCustomId('hobbiesInput')
-	.setLabel("What's some of your favorite hobbies?")
-	.setStyle(TextInputStyle.Paragraph);
+  .setCustomId("hobbiesInput")
+  .setLabel("What's some of your favorite hobbies?")
+  .setStyle(TextInputStyle.Paragraph);
 
 const firstActionRow = new ActionRowBuilder().addComponents(favoriteColorInput);
 const secondActionRow = new ActionRowBuilder().addComponents(hobbiesInput);
 
 modal.addComponents(firstActionRow, secondActionRow);
 ```
+
 # How to Use:
+
 - Install Diseact on your project:
+
 ```
 npm i diseact
 ```
+
 - In your `jsconfig.json` or `tsconfig.json` file, set:
+
 ```jsonc
 {
-	"compilerOptions": {
-		"jsxFactory": "Diseact.createElement",
-		"jsx": "react"
-		// ...
-	}
+  "compilerOptions": {
+    "jsxFactory": "Diseact.createElement",
+    "jsx": "react"
+    // ...
+  }
 }
 ```
-- Import Diseact on your JSX/TSX file:
-```jsx
-import Diseact from 'diseact';
 
-const myEmbed = <embed>
-	<title>Hello from Diseact!</title>
-</embed>
+or use babel:
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic",
+        "importSource": "diseact"
+      }
+    ]
+  ]
+}
 ```
+
+- Import Diseact on your JSX/TSX file:
+
+```jsx
+import Diseact from "diseact";
+
+const myEmbed = (
+  <embed>
+    <title>Hello from Diseact!</title>
+  </embed>
+);
+```
+
+> If you are using babel with runtime setted to automatic, you don't need to import diseact to use JSX
 
 See the Documentation below:
 
@@ -89,22 +127,8 @@ const myEmbed = (
     <footer iconURL="https://example.com/">footer</footer>
   </embed>
 );
-```
 
-But we have a problem. JSX Elements need the render function and need to be involved with a component to work.
-
-### Weird way to use JSX Elements of Diseact:
-
-You can use the Diseact parser function to transform a JSX Element into a Discord Element.
-
-```jsx
-const embed = Diseact.parse(
-  <embed color="White" timestamp={new Date()}>
-    ...
-  </embed>
-);
-
-// output: [EmbedBuilder]
+message.send({ embeds: [myEmbed] });
 ```
 
 # Components
@@ -200,3 +224,60 @@ Diseact.render(channel, <MyComponent />);
 The first parameter in the render function, is a target. This property can be a `TextChannel`, `Message` or `CommandInteraction`. The second parameter is a component to render. Easy peazy!
 
 In the first render, Diseact will use `channel.send`, `message.channel.send` or `interaction.reply` to send the first message. After each render, the message is edited with `message.edit` or `interaction.editReply`.
+
+# Commands
+
+We can use JSX to create Commands:
+
+```jsx
+export default (
+  <command name="ping">
+    {(interaction) => {
+      interaction.reply("Pong!");
+    }}
+  </command>
+);
+```
+
+You can pass subcommands and groups too:
+
+```jsx
+export default (
+  <command name="member">
+    <subcommand name="ban">
+      <user name="target">
+      <string name="reason" optional>
+
+      {(interaction) => {
+        ...
+      }}
+    </subcommand>
+
+    <subcommand name="unban">
+      <user name="target">
+
+      {(interaction) => {
+        ...
+      }}
+    </subcommand>
+
+    <group name="meta">
+      <subcommand name="set">
+        ...
+      </subcommand>
+    </group>
+  </command>
+)
+```
+
+And Define localizations:
+
+```jsx
+const localizations = {
+  name: { "pt-BR": "Olá" }
+}
+
+export default <command localizations={localizations} />
+```
+## Handling
+Hold on, working on now...
