@@ -12,7 +12,7 @@
     "command"
   ],
   "scripts": {
-    "build": "babel src --out-dir .",
+    "build": "babel src --out-dir . --copy-files",
     "prepublish": "npm run build",
     "test": "cls && cd test && tsx --tsconfig ./tsconfig.json --env-file=.env --test"
   },
