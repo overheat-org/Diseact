@@ -1,21 +1,15 @@
-import { CommandInteraction, Message, TextChannel } from "discord.js";
-import { parseElement } from "./elements/parser";
-import { flushEffects, setCurrentComponent, setCurrentIndex } from "./component/hooks";
-import * as collector from './collector';
+import { flushEffects, setCurrentComponent, setCurrentIndex } from "../hooks";
+import * as collector from '../internal/collector';
+import { randomBytes } from 'crypto';
 
-/**
- * @param {Target} target 
- * @param {ReturnType<typeof parseElement>} content 
- * @param {boolean} first 
- */
 export async function evaluate(target, content, first) {
     switch (true) {
-        case target instanceof TextChannel: {
+        case 'send' in target: {
             target = await target.send(content);
 
             break;
         }
-        case target instanceof Message: {
+        case 'channel' in target: {
             if (first) {
                 target = await target.channel.send(content);
             } else {
@@ -23,7 +17,7 @@ export async function evaluate(target, content, first) {
             }
             break;
         }
-        case target instanceof CommandInteraction: {
+        case 'reply' in target: {
             if (first) {
                 await target.reply(content);
             } else {
@@ -41,17 +35,13 @@ export async function evaluate(target, content, first) {
     return target;
 }
 
-/**
- * @param {JSX.Component} component 
- */
 export async function renderComponent(component, first = false) {
     setCurrentIndex(0);
     setCurrentComponent(component);
+    component._render = 1 + (component._render ?? -1);
 
-    const renderedOutput = component(component.props);
+    const content = component(component.props);
     flushEffects();
-
-    const content = parseElement(renderedOutput);
 
     try {
         const target = await evaluate(component._target, content, first);
@@ -72,12 +62,11 @@ export async function render(target, component) {
         collector.Run(target.client);
     }
 
-    const root = parseElement(component);
-
-    if (typeof root == 'function') {
-        root._target = target;
-        await renderComponent(root, true);
+    if (typeof component == 'function') {
+        component._target = target;
+        component._id = randomBytes(2).toString('hex');
+        await renderComponent(component, true);
     } else {
-        await evaluate(target, root, true);
+        await evaluate(target, component, true);
     }
 }

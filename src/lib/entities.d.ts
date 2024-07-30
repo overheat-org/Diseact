@@ -32,19 +32,15 @@ interface CommandBased {
 	children?: unknown;
 }
 
+type CommandBasedChildren = JSX.Element | ((interaction: CommandInteraction<"cached">) => unknown);
+
 export interface Command extends CommandBased {
 	nsfw?: boolean;
-	children?: (
-		| JSX.Element
-		| ((interaction: CommandInteraction<"cached">) => unknown)
-	)[];
+	children?: CommandBasedChildren | CommandBasedChildren[];
 }
 
 export interface SubCommand extends CommandBased {
-	children?: (
-		| JSX.Element
-		| ((interaction: CommandInteraction<"cached">) => unknown)
-	)[];
+	children?: CommandBasedChildren | CommandBasedChildren[];
 }
 
 export interface SubCommandGroup extends CommandBased {
@@ -55,25 +51,22 @@ export interface OptionBased extends Omit<CommandBased, "children"> {
 	optional?: boolean;
 }
 
-export interface CanCompleteOption extends OptionBased {
+export interface String extends OptionBased {
+	max?: number;
+	min?: number;
 	autocomplete?: (interaction: AutocompleteInteraction) => unknown;
-}
-
-export interface String extends CanCompleteOption {
-	maxLength?: number;
-	minLength?: number;
 }
 
 export interface Boolean extends OptionBased { }
 
 export interface Number extends OptionBased {
-	maxValue?: number;
-	minValue?: number;
+	max?: number;
+	min?: number;
 }
 
 export interface Integer extends OptionBased {
-	maxValue?: number;
-	minValue?: number;
+	max?: number;
+	min?: number;
 }
 
 export interface Channel extends OptionBased { }
@@ -99,8 +92,8 @@ export interface TextInput extends ComponentBased {
 	label?: string;
 	style: TextInputStyle;
 	placeholder?: string;
-	minLength?: number;
-	maxLength?: number;
+	min?: number;
+	max?: number;
 	value?: string;
 	required?: boolean;
 }
@@ -137,12 +130,18 @@ interface DangerButton extends ButtonBased, ComponentBased {
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
+interface PremiumButton extends ButtonBased, ComponentBased {
+	isPremium: true;
+	onClick?(interaction: ButtonInteraction): unknown
+}
+
 export type Button = 
 	| LinkButton
 	| PrimaryButton
 	| SecondaryButton
 	| SuccessButton
-	| DangerButton;
+	| DangerButton
+	| PremiumButton;
 
 interface BaseSelectMenu extends ComponentBased {
 	placeholder: string;
@@ -159,7 +158,7 @@ export interface UserSelectMenu extends BaseSelectMenu {
 
 export interface ChannelSelectMenu extends BaseSelectMenu {
 	isChannel: true
-	defaultChannel: string[]
+	defaultChannels: string[]
 	channelTypes: ChannelType[]
 	onSelect?(interaction: ChannelSelectMenuInteraction): unknown
 }
@@ -172,7 +171,7 @@ export interface RoleSelectMenu extends BaseSelectMenu {
 
 export interface MentionableSelectMenu extends BaseSelectMenu {
 	isMentionable: true
-	defaultValues: (
+	defaultMentionables: (
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.Role>
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.User>
 	)[];

@@ -1,3 +1,0 @@
-function Eval(elemType) {
-	switch ()
-}

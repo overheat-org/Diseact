@@ -1,6 +1,8 @@
 test/
-tsconfig.json
+src/
+webpack.config.js
+.babelrc
+.gitignore
 node_modules
 package-lock.json
-README.md
 .vscode
