@@ -13,11 +13,11 @@ Use:
 ```tsx
 const modal = (
   <modal id="myModal" title="My Modal">
-    <textinput id="favoriteColorInput" style={TextInputStyle.Short}>
+    <textinput isShort id="favoriteColorInput">
       What's your favorite color?
     </textinput>
 
-    <textinput id="hobbiesInput" style={TextInputStyle.Paragraph}>
+    <textinput isParagraph id="hobbiesInput">
       What's some of your favorite hobbies?
     </textinput>
   </modal>
@@ -27,7 +27,9 @@ const modal = (
 Instead:
 
 ```tsx
-const modal = new ModalBuilder().setCustomId("myModal").setTitle("My Modal");
+const modal = new ModalBuilder()
+  .setCustomId("myModal")
+  .setTitle("My Modal");
 
 const favoriteColorInput = new TextInputBuilder()
   .setCustomId("favoriteColorInput")
