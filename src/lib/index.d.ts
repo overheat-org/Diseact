@@ -6,6 +6,8 @@ export type RenderTarget =
 	| TextChannel 
 	| CommandInteraction;
 
+export function CommandInteractionExecutor(interaction: CommandInteraction): void
+
 export function createElement(type: string, props: { [k: string]: unknown }, ...children: JSX.Element[]): JSX.Element;
 
 export function render(target: RenderTarget, component: JSX.Component | JSX.Element): Promise<void>
