@@ -1,5 +1,5 @@
 module.exports =
-<command name="ping">
+<command name="ping" description="Pong!">
     {(interaction) => {
         interaction.reply('pong!')
     }}

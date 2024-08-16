@@ -7,18 +7,21 @@ const Diseact = require('diseact');
 const Counter = require('./components/Counter');
 const Select = require('./components/Select');
 
-const { TEST_CHANNEL, TOKEN } = process.env;
+const { TEST_CHANNEL, TEST_GUILD, TOKEN } = process.env;
 
 const client = new Discord.Client({ intents: ['Guilds', 'GuildMessages'] });
 
-for(const filePath of fs.readdirSync(j(__dirname, "commands"))) {
-	const file = require(j(__dirname, "commands", filePath));
-
-	console.log(file)
-}
+client.on('interactionCreate', interaction => {
+	if(!interaction.isCommand()) return;
+	
+	Diseact.CommandInteractionExecutor(interaction);
+})
 
 client.once('ready', async () => {
 	const channel = await client.channels.fetch(TEST_CHANNEL);
+	const guild = await client.guilds.fetch(TEST_GUILD);
+
+	guild.commands.set(fs.readdirSync(j(__dirname, "commands")).map(p => require(j(__dirname, "commands", p))))
 
 	Diseact.render(channel, <Counter />);
 	Diseact.render(channel, <Select />);
