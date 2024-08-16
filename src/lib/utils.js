@@ -21,10 +21,8 @@ export const generateCustomId = (type) => {
     component_id = currentComponent._id;
     component_render_index = currentComponent._render;
 
-    let n = type_cache.get(type);
-    
-    if(n == undefined) n = 0;
-    else n += 1;
+    let n = type_cache.get(type) ?? 0;
+    n += 1;
 
     type_cache.set(type, n);
 

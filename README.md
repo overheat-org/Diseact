@@ -276,10 +276,31 @@ And Define localizations:
 
 ```jsx
 const localizations = {
-  name: { "pt-BR": "Olá" }
-}
+  name: { "pt-BR": "Olá" },
+};
 
-export default <command localizations={localizations} />
+export default <command localizations={localizations} />;
 ```
+
+## Definition
+
+Use a iteration to read commands and
+
+```ts
+for (const commandPath of readdirSync("./commands")) {
+  const command = (await import(commandPath)).default;
+  guild.commands.set(command);
+}
+```
+
 ## Handling
-Hold on, working on now...
+
+You need to use `CommandInteractionExecutor` to run command interactions:
+
+```js
+client.on("interactionCreate", (interaction) => {
+  if (!interaction.isCommand()) return;
+
+  Diseact.CommandInteractionExecutor(interaction);
+});
+```
