@@ -4,18 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "babel-node --env-file=.env index.jsx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "^7.24.9",
-    "@babel/node": "^7.25.0",
-    "@babel/preset-env": "^7.25.0",
-    "@babel/preset-react": "^7.24.7",
-    "discord.js": "^14.15.3",
-    "diseact": "file:../",
-    "dotenv": "^16.4.5"
+    "diseact": "file:../"
   }
 }

@@ -1,6 +1,5 @@
 import { enqueueRender } from '../internal/component';
 
-/** @type {import('../internal/component').Component} */
 export let currentComponent, currentIndex = 0;
 
 export const setCurrentIndex = index => currentIndex = index;

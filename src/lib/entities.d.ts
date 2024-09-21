@@ -1,3 +1,4 @@
+import type { NodeCanvasRenderingContext2DSettings } from "canvas";
 import {
 	APISelectMenuDefaultValue,
 	AutocompleteInteraction,
@@ -253,3 +254,71 @@ export interface InteractionOpts extends OptsBase {
 }
 
 export type Container = MessageOpts | InteractionOpts;
+
+export interface Canvas {
+	width: number
+	height: number
+	context: '2d'
+	font?: string
+	alpha?: boolean
+	angle?: number
+	pixel?: NodeCanvasRenderingContext2DSettings['pixelFormat']
+}
+
+export interface Rectangle {
+	x: number
+	y: number
+	height: number
+	width: number
+	style?: string
+}
+
+export interface Circle {
+	x: number
+	y: number
+	radius: number
+	startAngle?: number
+	endAngle?: number
+	style?: string
+	clockwise?: boolean
+}
+
+export interface Line {
+	startPos: [number, number]
+	endPos: [number, number]
+	style?: string
+	width?: number
+}
+
+export interface Img {
+	x: number
+	y: number
+	src: string | Buffer
+	width?: number
+	height?: number
+}
+
+export interface Path {
+	x: number
+	y: number
+}
+
+export interface Gradient {
+	startPos: [number, number]
+	endPos: [number, number]
+	colors: string[]
+	style?: string
+	startGradient: [number, number]
+	endGradient: [number, number]
+}
+
+export interface Text {
+	x: number
+	y: number
+	size?: number
+	font?: string
+	bold?: boolean
+	italic?: boolean
+	style?: string
+	maxWidth?: number
+}

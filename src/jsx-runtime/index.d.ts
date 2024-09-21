@@ -26,6 +26,14 @@ import {
 	Option,
 	SubCommand,
 	Container,
+	Canvas,
+	Rectangle,
+	Circle,
+	Line,
+	Img,
+	Path,
+	Gradient,
+	Text,
 } from "../lib/entities";
 
 declare global {
@@ -67,6 +75,14 @@ declare global {
 			attachment: IntrinsicElement<Attachment>;
 			container: IntrinsicElement<Container>;
 			// TODO: Do poll on JSX
+			canvas: IntrinsicElement<Canvas>;
+			rectangle: IntrinsicElement<Rectangle>;
+			circle: IntrinsicElement<Circle>;
+			line: IntrinsicElement<Line>;
+			img: IntrinsicElement<Img>;
+			path: IntrinsicElement<Path>;
+			gradient: IntrinsicElement<Gradient>;
+			text: IntrinsicElement<Text>;
 		}
 	}
 }
