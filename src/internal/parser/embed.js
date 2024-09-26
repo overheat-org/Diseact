@@ -3,9 +3,46 @@ function parseEmbedElement(element) {
         case "title":
 		case "description":
 		case "thumbnail":
-		case "fields": return { prop: element.type, value: element.children.join('') }
-		case "author": return { prop: element.type, value: { name: element.children.join(''), url: element.props.url, iconURL: element.props.iconURL } }
-		case "footer": return { prop: element.type, value: { text: element.children.join(''), iconURL: element.props.iconURL } }
+		case "fields": {
+			const [text] = element.children;
+
+			if(text.type != 'TEXT_ELEMENT') {
+				throw new Error('Expected a text of child on element')
+			}
+			
+			return { prop: element.type, value: text.props.value }
+		}
+		case "author": {
+			const [text] = element.children;
+	
+			if(text.type != 'TEXT_ELEMENT') {
+				throw new Error('Expected a text of child on element')
+			}
+			
+			return { 
+				prop: element.type, 
+				value: { 
+					name: text.props.value, 
+					url: element.props.url, 
+					iconURL: element.props.iconURL 
+				}
+			}
+		}
+		case "footer": {
+			const [text] = element.children;
+		
+			if (text.type != 'TEXT_ELEMENT') {
+				throw new Error('Expected a text of child on element');
+			}
+			
+			return {
+				prop: element.type,
+				value: {
+					text: text.props.value,
+					iconURL: element.props.iconURL
+				}
+			};
+		}
 		case "embed": {
 			const embed = element.props;
 			embed.$symbol = Symbol.for("embed");
@@ -17,11 +54,16 @@ function parseEmbedElement(element) {
 			return embed;
 		}
 		case "image": {
-			const value = typeof element.children == 'object'
-				? element
-				: element.children.toString();
+			let url = '';
+			const [text] = element.children;
+	
+			if(text.type == 'TEXT_ELEMENT') {
+				url = text.props.value;
+			} else {
+				url = text;
+			}
 
-			return { prop: element.type, value }
+			return { prop: element.type, value: { url } }
 		}
     }
 }
