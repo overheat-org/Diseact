@@ -2,6 +2,8 @@ import { currentComponent } from "../hooks/index";
 
 export const defer = Promise.prototype.then.bind(Promise.resolve());
 
+export const JSX = (e) => e;
+
 const acceptedTypes = {
     "button": 1,
     "selectmenu": 2,
@@ -14,6 +16,8 @@ let component_render_index;
 let type_cache = new Map();
 
 export const generateCustomId = (type) => {
+    if(!currentComponent) throw new Error('This Element can\'t be used outside a Diseact Component')
+
     if(component_id != currentComponent._id || component_render_index != currentComponent._render) {
         type_cache.clear();
     }
