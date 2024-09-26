@@ -12,5 +12,6 @@ export function createElement(type: string, props: { [k: string]: unknown }, ...
 
 export function render(target: RenderTarget, component: JSX.Component | JSX.Element): Promise<void>
 
+export function JSX(e): any
 
 type ExecutionFunction = (interaction: Interaction) => unknown;

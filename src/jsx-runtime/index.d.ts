@@ -35,6 +35,7 @@ import {
 	Gradient,
 	Text,
 } from "../lib/entities";
+import '../hooks/index';
 
 declare global {
 	namespace JSX {
