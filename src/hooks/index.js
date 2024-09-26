@@ -16,21 +16,32 @@ function getHookState(index) {
 }
 
 export function useState(initialState) {
+    return useReducer(invokeOrReturn, initialState);
+}
+
+
+export function useReducer(reducer, initialState, init) {
     const component = currentComponent;
     const hookState = getHookState(currentIndex++);
-    hookState._value ||= initialState;
 
-    const setState = (newValue) => {
-        if(typeof newValue == 'function') {
-            newValue = newValue(hookState._value);
+    if (!hookState._initialized) {
+        hookState._value = init ? init(initialState) : initialState;
+        hookState._initialized = true;
+    }
+
+    const dispatch = (action) => {
+        const currentValue = hookState._value;
+        const nextValue = reducer(currentValue, action);
+
+        if (nextValue !== currentValue) {
+            hookState._value = nextValue;
+            enqueueRender(component);
         }
-
-        hookState._value = newValue;
-        enqueueRender(component);
     };
 
-    return [hookState._value, setState];
+    return [hookState._value, dispatch];
 }
+
 
 function invokeCleanup(hook) {
     if (typeof hook._cleanup === 'function') {
@@ -61,4 +72,8 @@ export function flushEffects() {
         hooks._pendingEffects.forEach(invokeEffect);
         hooks._pendingEffects = [];
     }
+}
+
+function invokeOrReturn(arg, f) {
+	return typeof f == 'function' ? f(arg) : f;
 }
