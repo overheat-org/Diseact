@@ -70,7 +70,7 @@ export async function render(target, component) {
         collector.Run(target.client);
     }
 
-    if (component instanceof Component) {
+    if (component.constructor.name == Component.name) {
         component.target = target;
         component.id = randomBytes(2).toString('hex');
         enqueueRender(component);

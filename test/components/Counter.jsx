@@ -11,8 +11,6 @@ function Counter() {
         setCount(c => c - 1);
     }
 
-    console.log({count})
-
     return <message>
         <embed>
             <title>Counter</title>
