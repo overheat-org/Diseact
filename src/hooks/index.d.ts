@@ -1,5 +1,3 @@
-export const currentComponent: import('../lib/component').default
-
 export type Dispatch<A> = (value: A) => void;
 export type StateUpdater<S> = S | ((prevState: S) => S);
 

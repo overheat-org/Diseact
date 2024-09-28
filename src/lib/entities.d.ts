@@ -243,13 +243,11 @@ export interface OptsBase {
 }
 
 export interface Message extends OptsBase {
-	isMessage: true;
 	nonce?: string | number;
 	enforceNonce?: boolean;
 }
 
 export interface Interaction extends OptsBase {
-	isInteraction: true;
 	ephemeral?: boolean;
 	fetchReply?: boolean;
 }

@@ -37,7 +37,6 @@ import {
 	Message,
 	Interaction
 } from "../lib/entities";
-import '../hooks/index';
 
 declare global {
 	namespace JSX {
