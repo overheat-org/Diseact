@@ -1,6 +1,6 @@
 import { concatenateTextElements, generateCustomId } from "../../lib/utils";
 import Component from "../../lib/component";
-import { listeners } from "../collector";
+import { collectorState.listeners } from "../collector";
 
 function parseDiscordComponentElement(element) {
     switch (element.type) {
@@ -37,7 +37,7 @@ function parseDiscordComponentElement(element) {
 			}
 
 			if (button.style != 5) {
-				listeners.set(button.custom_id, onClick);
+				collectorState.listeners.set(button.custom_id, onClick);
 			}
 
 			return button;
@@ -56,7 +56,7 @@ function parseDiscordComponentElement(element) {
 			defaultValues && (selectmenu.default_values = defaultValues);
 			channelTypes && (selectmenu.channel_types = channelTypes);
 
-			listeners.set(selectmenu.custom_id, onSelect);
+			collectorState.listeners.set(selectmenu.custom_id, onSelect);
 
 			switch (true) {
 				case isString:

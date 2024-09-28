@@ -1,9 +1,21 @@
 export let isConnected = false;
 
 /**
- * @type {Map<string, Function>}
+ * @type {{ listeners: Map<string, Function> }}
  */
-export const listeners = new Map();
+const collectorState = global.DISEACT_COLLECTOR_STATE
+    ? new Proxy(global.DISEACT_COLLECTOR_STATE, {
+        get(target, prop) {
+            return target[prop];
+        },
+        set(target, prop, value) {
+            target[prop] = value;
+            return true;
+        }
+    })
+    : {
+        listeners: new Map,
+    }
 
 /**
  * @param {import('discord.js').Client} client 
@@ -14,7 +26,7 @@ export function Run(client) {
     client.on('interactionCreate', interaction => {
         if(!interaction.isMessageComponent()) return;
 
-        const fn = listeners.get(interaction.customId)
+        const fn = collectorState.listeners.get(interaction.customId)
         if(!fn) return;
 
         const response = fn(interaction);
