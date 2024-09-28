@@ -211,6 +211,7 @@ export interface Title { }
 export interface Description { }
 
 export interface Author {
+	name?: string
 	url?: string;
 	iconURL?: string;
 }
@@ -241,19 +242,19 @@ export interface OptsBase {
 	children?: JSX.Node
 }
 
-export interface MessageOpts extends OptsBase {
+export interface Message extends OptsBase {
 	isMessage: true;
 	nonce?: string | number;
 	enforceNonce?: boolean;
 }
 
-export interface InteractionOpts extends OptsBase {
+export interface Interaction extends OptsBase {
 	isInteraction: true;
 	ephemeral?: boolean;
 	fetchReply?: boolean;
 }
 
-export type Container = MessageOpts | InteractionOpts;
+export type Container = Message | Interaction;
 
 export interface Canvas {
 	width: number

@@ -34,6 +34,8 @@ import {
 	Path,
 	Gradient,
 	Text,
+	Message,
+	Interaction
 } from "../lib/entities";
 import '../hooks/index';
 
@@ -75,6 +77,8 @@ declare global {
 			mentionable: IntrinsicElement<Mentionable>;
 			attachment: IntrinsicElement<Attachment>;
 			container: IntrinsicElement<Container>;
+			message: IntrinsicElement<Message>;
+			interaction: IntrinsicElement<Interaction>;
 			// TODO: Do poll on JSX
 			canvas: IntrinsicElement<Canvas>;
 			rectangle: IntrinsicElement<Rectangle>;
