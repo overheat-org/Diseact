@@ -1,8 +1,8 @@
 import { enqueueRender } from '../internal/render';
 
 /** @type {{ component?: object, index: number }} */
-export const hookState = global.DISEACT_CURRENT_STATE_HOOK 
-    ? new Proxy(global.DISEACT_CURRENT_STATE_HOOK, {
+export const hookState = global.DISEACT_HOOK_STATE 
+    ? new Proxy(global.DISEACT_HOOK_STATE, {
         get(target, prop) {
             return target[prop];
         },
