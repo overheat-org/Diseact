@@ -1,6 +1,6 @@
 import util from 'util';
 import { DISEACT_DEV } from "../internal/debug";
-import { flushEffects, setCurrentComponent, setCurrentIndex } from "../hooks";
+import { flushEffects, currentState } from "../hooks";
 import * as collector from '../internal/collector';
 import { randomBytes } from 'crypto';
 import { enqueueRender } from '../internal/render';
@@ -45,8 +45,8 @@ export async function evaluate(target, content, first) {
 
 /** @param {Component} component  */
 export async function renderComponent(component) {
-    setCurrentIndex(0);
-    setCurrentComponent(component);
+    currentState.index = 0;
+    currentState.component = component;
     component.render = 1 + (component.render ?? -1);
     
     if(DISEACT_DEV) console.log(`${component.render} [${component.name} : ${component.id}]:\n\tprops: ${objectInspect(component.props)}\n\thooks: ${objectInspect(component.hooks)}`);

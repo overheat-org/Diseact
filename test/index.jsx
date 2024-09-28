@@ -1,3 +1,5 @@
+Object.assign(global, { DISEACT_CURRENT_STATE_HOOK: { index: 0, component: undefined } })
+
 const fs = require('fs');
 const { join: j } = require('path');
 const Discord = require('discord.js');
@@ -16,6 +18,8 @@ client.on('interactionCreate', interaction => {
 	
 	Diseact.CommandInteractionExecutor(interaction);
 })
+
+setInterval(() => console.log(global.DISEACT_CURRENT_STATE_HOOK), 5000)
 
 client.once('ready', async () => {
 	/** @type {import('discord.js').TextChannel} */

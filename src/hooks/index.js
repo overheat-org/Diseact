@@ -1,14 +1,20 @@
 import { enqueueRender } from '../internal/render';
 
-export const currentState = global.DISEACT_CURRENT_STATE_HOOK ?? {
-    /** @type {import('../lib/component').default} */
-    component: undefined,
-    index: 0
-}
-
-export const setCurrentIndex = index => currentState.index = index;
-
-export const setCurrentComponent = component => currentState.component = component;
+/** @type {{ component?: object, index: number }} */
+export const currentState = global.DISEACT_CURRENT_STATE_HOOK 
+    ? new Proxy(global.DISEACT_CURRENT_STATE_HOOK, {
+        get(target, prop) {
+            return target[prop];
+        },
+        set(target, prop, value) {
+            target[prop] = value;
+            return true;
+        }
+    }) 
+    : {
+        component: undefined,
+        index: 0
+    };
 
 function getHookState(index) {
     if (index >= currentState.component.hooks.list.length) {
