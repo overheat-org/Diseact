@@ -1,7 +1,7 @@
 import { enqueueRender } from '../internal/render';
 
 /** @type {{ component?: object, index: number }} */
-export const hookState = global.DISEACT_HOOK_STATE 
+export const globalHookState = global.DISEACT_HOOK_STATE 
     ? new Proxy(global.DISEACT_HOOK_STATE, {
         get(target, prop) {
             return target[prop];
@@ -17,11 +17,11 @@ export const hookState = global.DISEACT_HOOK_STATE
     };
 
 function getHookState(index) {
-    if (index >= hookState.component.hooks.list.length) {
-        hookState.component.hooks.list.push({});
+    if (index >= globalHookState.component.hooks.list.length) {
+        globalHookState.component.hooks.list.push({});
     }
 
-    return hookState.component.hooks.list[index];
+    return globalHookState.component.hooks.list[index];
 }
 
 export function useState(initialState) {
@@ -30,8 +30,8 @@ export function useState(initialState) {
 
 
 export function useReducer(reducer, initialState, init) {
-    const component = hookState.component;
-    const hookState = getHookState(hookState.index++);
+    const component = globalHookState.component;
+    const hookState = getHookState(globalHookState.index++);
 
     if (!hookState.initialized) {
         hookState.value = init ? init(initialState) : initialState;
@@ -75,7 +75,7 @@ export function useEffect(callback, args) {
 }
 
 export function flushEffects() {
-    const hooks = hookState.component.hooks;
+    const hooks = globalHookState.component.hooks;
 
     if (hooks) {
         hooks.pendingEffects.forEach(invokeCleanup);

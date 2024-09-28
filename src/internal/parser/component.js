@@ -1,6 +1,6 @@
-import { concatenateTextElements, generateCustomId } from "../../lib/utils";
+import { concatenateTextElements } from "../../lib/utils";
 import Component from "../../lib/component";
-import { collectorState.listeners } from "../collector";
+import { collectorState } from "../collector";
 
 function parseDiscordComponentElement(element) {
     switch (element.type) {

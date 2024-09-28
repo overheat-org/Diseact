@@ -19,8 +19,6 @@ client.on('interactionCreate', interaction => {
 	Diseact.CommandInteractionExecutor(interaction);
 })
 
-setInterval(() => console.log(global.DISEACT_HOOK_STATE), 5000)
-
 client.once('ready', async () => {
 	/** @type {import('discord.js').TextChannel} */
 	const channel = await client.channels.fetch(TEST_CHANNEL);

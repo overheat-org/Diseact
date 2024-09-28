@@ -3,7 +3,7 @@ export let isConnected = false;
 /**
  * @type {{ listeners: Map<string, Function> }}
  */
-const collectorState = global.DISEACT_COLLECTOR_STATE
+export const collectorState = global.DISEACT_COLLECTOR_STATE
     ? new Proxy(global.DISEACT_COLLECTOR_STATE, {
         get(target, prop) {
             return target[prop];
