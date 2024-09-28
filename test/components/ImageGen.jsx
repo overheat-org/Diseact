@@ -7,7 +7,7 @@ function ImageGeneration() {
         setOption(i.values[0]);
     }
 
-    return <container isMessage>
+    return <message>
         <canvas context='2d' height={200} width={400}>
             {option == 'square'
                 ? <rectangle x={200} y={100} height={20} width={20} />
@@ -19,7 +19,7 @@ function ImageGeneration() {
             <option value='square'>Square</option>
             <option value='circle'>Circle</option>
         </selectmenu>
-    </container>
+    </message>
 }
 
 module.exports = ImageGeneration;

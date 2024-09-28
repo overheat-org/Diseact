@@ -3,15 +3,16 @@ import { useState, useEffect } from "diseact";
 function Pokemon({ id }) {
     const [pokemon, setPokemon] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
             .then(r => r.json())
             .then(d => void (setPokemon(d), setLoading(false)))
-            .catch(() => setLoading(false));
+            .catch(e => void (setError(e), setLoading(false)));
     }, [id]);
 
-    return <container isMessage>
+    return <interaction>
         {loading
             ? (
                 <embed>
@@ -27,11 +28,12 @@ function Pokemon({ id }) {
                 )
                 : (
                     <embed>
-                        <title>An error ocurred</title>       
+                        <title>An error ocurred</title>
+                        <description>{JSON.stringify(error)}</description> 
                     </embed>
                 )
         }
-    </container> 
+    </interaction> 
 }
 
-module.exports = Pokemon;
+export default Pokemon;

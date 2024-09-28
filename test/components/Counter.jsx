@@ -11,7 +11,9 @@ function Counter() {
         setCount(c => c - 1);
     }
 
-    return <container isMessage>
+    console.log({count})
+
+    return <message>
         <embed>
             <title>Counter</title>
             <description>Count: {count}</description>
@@ -28,7 +30,7 @@ function Counter() {
             label='-'
             onClick={handleDecrement}
         />
-    </container>
+    </message>
 }
 
 module.exports = Counter;

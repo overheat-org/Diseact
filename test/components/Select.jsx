@@ -7,7 +7,7 @@ function Select() {
         setOption(i.values[0])
     }
 
-    return <container isMessage>
+    return <message>
         <embed>
             <title>Options</title>
             <description>{option ? `Selected: ${option}` : 'Nothing'}</description>
@@ -17,7 +17,7 @@ function Select() {
             <option value='cat' label='Cat'>It's a cat</option>
             <option value='dog' label='Dog'>It's a dog</option>
         </selectmenu>
-    </container>
+    </message>
 }
 
 module.exports = Select
