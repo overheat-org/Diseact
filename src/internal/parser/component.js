@@ -1,4 +1,6 @@
-import { generateCustomId } from "../../lib/utils";
+import { concatenateTextElements, generateCustomId } from "../../lib/utils";
+import Component from "../../lib/component";
+import { listeners } from "../collector";
 
 function parseDiscordComponentElement(element) {
     switch (element.type) {
@@ -8,7 +10,7 @@ function parseDiscordComponentElement(element) {
 				onClick, id, ...button
 			} = element.props;
 
-			button.custom_id = id ? id : generateCustomId('button');
+			button.custom_id = id ? id : Component.generateId('button');
 			button.type = 2;
 
 			switch (true) {
@@ -48,7 +50,7 @@ function parseDiscordComponentElement(element) {
 			} = element.props;
 			const defaultValues = defaultUsers ?? defaultChannels ?? defaultRoles ?? defaultMentionables;
 
-			selectmenu.custom_id = id ? id : generateCustomId('selectmenu');
+			selectmenu.custom_id = id ? id : Component.generateId('selectmenu');
 			max && (selectmenu.max_values = max);
 			min && (selectmenu.min_values = min);
 			defaultValues && (selectmenu.default_values = defaultValues);
@@ -89,12 +91,16 @@ function parseDiscordComponentElement(element) {
 			return selectmenu;
 		}
 		case "option": {
-			return { ...element.props, label: element.children.toString() ?? element.props.label };
+			return { 
+				...element.props, 
+				label: text ? concatenateTextElements(element.children) : element.props.label 
+			};
 		}
+		
 		case "textinput": {
 			const { isParagraph, isShort, max, min, id, ...textinput } = element.props;
 
-			textinput.custom_id = id ? id : generateCustomId('textinput');
+			textinput.custom_id = id ? id : Component.generateId('textinput');
 			max && (textinput.max_length = max);
 			min && (textinput.min_length = min);
 
@@ -113,7 +119,7 @@ function parseDiscordComponentElement(element) {
 		case "modal": {
 			const { id, ...modal } = element.props;
 
-			modal.custom_id = id ? id : generateCustomId('modal');
+			modal.custom_id = id ? id : Component.generateId('modal');
 			modal.components = [];
 
 			const textRow = { type: 1, components: [] };
