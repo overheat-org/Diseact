@@ -1,18 +1,21 @@
 import { enqueueRender } from '../internal/render';
 
-/** @type {import('../lib/component').default} */
-export let currentComponent, currentIndex = 0;
+export const currentState = global.DISEACT_CURRENT_STATE_HOOK ?? {
+    /** @type {import('../lib/component').default} */
+    component: undefined,
+    index: 0
+}
 
-export const setCurrentIndex = index => currentIndex = index;
+export const setCurrentIndex = index => currentState.index = index;
 
-export const setCurrentComponent = component => currentComponent = component;
+export const setCurrentComponent = component => currentState.component = component;
 
 function getHookState(index) {
-    if (index >= currentComponent.hooks.list.length) {
-        currentComponent.hooks.list.push({});
+    if (index >= currentState.component.hooks.list.length) {
+        currentState.component.hooks.list.push({});
     }
 
-    return currentComponent.hooks.list[index];
+    return currentState.component.hooks.list[index];
 }
 
 export function useState(initialState) {
@@ -21,8 +24,8 @@ export function useState(initialState) {
 
 
 export function useReducer(reducer, initialState, init) {
-    const component = currentComponent;
-    const hookState = getHookState(currentIndex++);
+    const component = currentState.component;
+    const hookState = getHookState(currentState.index++);
 
     if (!hookState.initialized) {
         hookState.value = init ? init(initialState) : initialState;
@@ -55,18 +58,18 @@ function invokeEffect(hook) {
 }
 
 export function useEffect(callback, args) {
-    const hookState = getHookState(currentIndex++);
+    const hookState = getHookState(currentState.index++);
     const hasChanged = !hookState.args || args.some((arg, i) => arg !== hookState.args[i]);
 
     if (hasChanged) {
         hookState.value = callback;
         hookState.args = args;
-        currentComponent.hooks.pendingEffects.push(hookState);
+        currentState.component.hooks.pendingEffects.push(hookState);
     }
 }
 
 export function flushEffects() {
-    const hooks = currentComponent.hooks;
+    const hooks = currentState.component.hooks;
 
     if (hooks) {
         hooks.pendingEffects.forEach(invokeCleanup);

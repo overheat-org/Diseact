@@ -1,4 +1,4 @@
-import { currentComponent } from "../hooks/index.js";
+import { currentState } from "../hooks/index.js";
 
 const acceptedTypes = {
     "button": 1,
@@ -50,14 +50,14 @@ class Component {
     static typeCache = new Map();
     
     static generateId(type) {
-        if(!currentComponent) throw new Error('This Element can\'t be used outside a Diseact Component')
+        if(!currentState.component) throw new Error('This Element can\'t be used outside a Diseact Component')
 
-        if(this.currentId != currentComponent.id || this.currentRenderIndex != currentComponent.render) {
+        if(this.currentId != currentState.component.id || this.currentRenderIndex != currentState.component.render) {
             this.typeCache.clear();
         }
 
-        this.currentId = currentComponent.id;
-        this.currentRenderIndex = currentComponent.render;
+        this.currentId = currentState.component.id;
+        this.currentRenderIndex = currentState.component.render;
 
         let n = this.typeCache.get(type) ?? 0;
         n += 1;
