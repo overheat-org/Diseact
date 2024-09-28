@@ -1,4 +1,5 @@
 import { createCanvas } from "canvas";
+import { concatenateTextElements } from "../../lib/utils";
 
 function parseCanvaElement(element) {
     switch (element.type) {
@@ -92,7 +93,6 @@ function parseCanvaElement(element) {
 
 						break;
 
-
 					default:
 						break;
 				}
@@ -127,23 +127,25 @@ function parseCanvaElement(element) {
 		case 'path': {
 			return {
 				type: 4,
-				content: element.children.toString(),
+				content: concatenateTextElements(element.children),
 				...element.props
-			}
+			};
 		}
 		case 'gradient': {
 			return {
 				type: 5,
+				content: concatenateTextElements(element.children),
 				...element.props
-			}
+			};
 		}
 		case 'text': {
 			return {
 				type: 0,
-				content: element.children.toString(),
+				content: concatenateTextElements(element.children),
 				...element.props
-			}
+			};
 		}
+		
     }
 }
 

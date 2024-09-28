@@ -1,44 +1,28 @@
+import { concatenateTextElements } from "../../lib/utils";
+
 function parseEmbedElement(element) {
     switch (element.type) {
         case "title":
 		case "description":
 		case "thumbnail":
 		case "fields": {
-			const [text] = element.children;
-
-			if(text.type != 'TEXT_ELEMENT') {
-				throw new Error('Expected a text of child on element')
-			}
-			
-			return { prop: element.type, value: text.props.value }
+			return { prop: element.type, value: concatenateTextElements(element.children) }
 		}
 		case "author": {
-			const [text] = element.children;
-	
-			if(text.type != 'TEXT_ELEMENT') {
-				throw new Error('Expected a text of child on element')
-			}
-			
 			return { 
 				prop: element.type, 
 				value: { 
-					name: text.props.value, 
+					name: element.props.name ?? concatenateTextElements(element.children), 
 					url: element.props.url, 
 					iconURL: element.props.iconURL 
 				}
 			}
 		}
 		case "footer": {
-			const [text] = element.children;
-		
-			if (text.type != 'TEXT_ELEMENT') {
-				throw new Error('Expected a text of child on element');
-			}
-			
 			return {
 				prop: element.type,
 				value: {
-					text: text.props.value,
+					text: concatenateTextElements(element.children),
 					iconURL: element.props.iconURL
 				}
 			};
@@ -54,11 +38,8 @@ function parseEmbedElement(element) {
 			return embed;
 		}
 		case "image": {
-			let url = '';
-			const [text] = element.children;
-	
 			if(text.type == 'TEXT_ELEMENT') {
-				url = text.props.value;
+				url = concatenateTextElements(element.children);
 			} else {
 				url = text;
 			}

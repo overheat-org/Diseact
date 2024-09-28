@@ -16,14 +16,17 @@ export function CommandInteractionExecutor(interaction) {
         subcommandName = interaction.options.getSubcommand(); 
     } catch {}
 
-    let name = commandName;
+    let path;
 
     if(groupName) {
-        name += groupName + subcommandName;
+        path = `${commandName} ${groupName} ${subcommandName}`;
     }
     else if(subcommandName) {
-        name += subcommandName;
+        path = `${commandName} ${subcommandName}`;
+    }
+    else {
+        path = commandName;
     }
 
-    commandMap.get(name)?.(interaction);
+    commandMap.get(path)?.(interaction);
 }

@@ -2,6 +2,7 @@ import parseSlashCommandElement from "./slashcommand";
 import parseDiscordComponentElement from "./component";
 import parseCanvaElement from "./canva";
 import parseEmbedElement from "./embed"; 
+import Component from "../../lib/component";
 
 // TODO: fazer as polls
 
@@ -48,8 +49,10 @@ function parseIntrinsicElement(element) {
 		case 'text':
 			return parseCanvaElement(element);
 
+		case 'message':
+		case 'interaction':
 		case "container": {
-			const { isMessage, isInteraction, ...container } = element.props;
+			const container = element.props;
 
 			container.embeds = [];
 			container.components = [];
@@ -81,6 +84,11 @@ function parseIntrinsicElement(element) {
 
 						break;
 					}
+					case child.type == 'TEXT_ELEMENT': {
+						container.content += child.props.value;
+						
+						break;
+					}
 					default:
 						throw new Error(`Cannot use element "${child.type}" in opts`);
 				}
@@ -103,10 +111,9 @@ function parseIntrinsicElement(element) {
 }
 
 function parseComponent(element) {
-	/** @type {Function} */
-	let component = element.type;
-	
-	Object.assign(component, { props: element.props });
+	const component = new Component(element.type);
+
+	component.props = element.props;
 	
 	return component;
 }
