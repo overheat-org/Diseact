@@ -1,7 +1,7 @@
 /**
  * @type {Map<string, Function>}
  */
-export const commandMap = new Map();
+export const commandMap = global.DISEACT_COMMAND_MAP ?? new Map();
 
 /**
  * @param {import("discord.js").CommandInteraction} interaction 
