@@ -6,9 +6,16 @@ export function createElement(type, props, ...children) {
 	return parseElement({ 
 		type, 
 		props, 
-		children: children.map(c =>
-			typeof c == 'object' ? c : createTextElement(c)
-		) ?? EMPTY_ARRAY
+		children: children?.map(c => {
+			switch (typeof c) {
+				case 'object':
+				case 'function':
+					return c;
+
+				default:
+					return createTextElement(c);
+			}
+		}) ?? EMPTY_ARRAY
 	});
 }
 
