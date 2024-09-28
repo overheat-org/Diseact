@@ -1,18 +1,18 @@
-import { enqueueRender } from '../internal/component';
+import { enqueueRender } from '../internal/render';
 
+/** @type {import('../lib/component').default} */
 export let currentComponent, currentIndex = 0;
 
 export const setCurrentIndex = index => currentIndex = index;
+
 export const setCurrentComponent = component => currentComponent = component;
 
 function getHookState(index) {
-    const hooks = currentComponent.__hooks ||= { _list: [], _pendingEffects: [] };
-
-    if (index >= hooks._list.length) {
-        hooks._list.push({});
+    if (index >= currentComponent.hooks.list.length) {
+        currentComponent.hooks.list.push({});
     }
 
-    return hooks._list[index];
+    return currentComponent.hooks.list[index];
 }
 
 export function useState(initialState) {
@@ -24,53 +24,54 @@ export function useReducer(reducer, initialState, init) {
     const component = currentComponent;
     const hookState = getHookState(currentIndex++);
 
-    if (!hookState._initialized) {
-        hookState._value = init ? init(initialState) : initialState;
-        hookState._initialized = true;
+    if (!hookState.initialized) {
+        hookState.value = init ? init(initialState) : initialState;
+        hookState.initialized = true;
     }
+    
 
     const dispatch = (action) => {
-        const currentValue = hookState._value;
+        const currentValue = hookState.value;
         const nextValue = reducer(currentValue, action);
 
         if (nextValue !== currentValue) {
-            hookState._value = nextValue;
+            hookState.value = nextValue;
             enqueueRender(component);
         }
     };
 
-    return [hookState._value, dispatch];
+    return [hookState.value, dispatch];
 }
 
 
 function invokeCleanup(hook) {
-    if (typeof hook._cleanup === 'function') {
-        hook._cleanup();
+    if (typeof hook.cleanup === 'function') {
+        hook.cleanup();
     }
 }
 
 function invokeEffect(hook) {
-    hook._cleanup = hook._value();
+    hook.cleanup = hook.value();
 }
 
 export function useEffect(callback, args) {
     const hookState = getHookState(currentIndex++);
-    const hasChanged = !hookState._args || args.some((arg, i) => arg !== hookState._args[i]);
+    const hasChanged = !hookState.args || args.some((arg, i) => arg !== hookState.args[i]);
 
     if (hasChanged) {
-        hookState._value = callback;
-        hookState._args = args;
-        currentComponent.__hooks._pendingEffects.push(hookState);
+        hookState.value = callback;
+        hookState.args = args;
+        currentComponent.hooks.pendingEffects.push(hookState);
     }
 }
 
 export function flushEffects() {
-    const hooks = currentComponent.__hooks;
+    const hooks = currentComponent.hooks;
 
     if (hooks) {
-        hooks._pendingEffects.forEach(invokeCleanup);
-        hooks._pendingEffects.forEach(invokeEffect);
-        hooks._pendingEffects = [];
+        hooks.pendingEffects.forEach(invokeCleanup);
+        hooks.pendingEffects.forEach(invokeEffect);
+        hooks.pendingEffects = [];
     }
 }
 
