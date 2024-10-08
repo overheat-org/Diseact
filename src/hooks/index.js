@@ -16,6 +16,9 @@ export const globalHookState = global.DISEACT_HOOK_STATE
         index: 0
     };
 
+export const globalHookContexts = new WeakMap();
+globalHookContexts
+
 function getHookState(index) {
     if (index >= globalHookState.component.hooks.list.length) {
         globalHookState.component.hooks.list.push({});

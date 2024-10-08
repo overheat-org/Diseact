@@ -7,3 +7,6 @@ export function concatenateTextElements(elements) {
         .map(el => (el.type === 'TEXT_ELEMENT' ? el.props.value : ''))
         .join('');
 }
+
+export const _deferred = Symbol();
+export const useDefer = (returns) => ({ type: _deferred, value: returns });

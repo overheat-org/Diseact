@@ -1,5 +1,3 @@
-Object.assign(global, { DISEACT_HOOK_STATE: { index: 0, component: undefined } })
-
 const fs = require('fs');
 const { join: j } = require('path');
 const Discord = require('discord.js');

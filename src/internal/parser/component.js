@@ -3,14 +3,19 @@ import Component from "../../lib/component";
 import { collectorState } from "../collector";
 
 function parseDiscordComponentElement(element) {
-    switch (element.type) {
-        case "button": {
+	switch (element.type) {
+		case "button": {
 			const {
 				isPrimary, isSecondary, isDanger, isSuccess, isLink, isPremium,
 				onClick, id, ...button
 			} = element.props;
 
-			button.custom_id = id ? id : Component.generateId('button');
+			if (id) {
+				if (typeof id == 'number') button.custom_id = id.toString();
+				else button.custom_id = id;
+			}
+			else button.custom_id = Component.generateId('button');
+
 			button.type = 2;
 
 			switch (true) {
@@ -50,7 +55,12 @@ function parseDiscordComponentElement(element) {
 			} = element.props;
 			const defaultValues = defaultUsers ?? defaultChannels ?? defaultRoles ?? defaultMentionables;
 
-			selectmenu.custom_id = id ? id : Component.generateId('selectmenu');
+			if (id) {
+				if (typeof id == 'number') selectmenu.custom_id = id.toString();
+				else selectmenu.custom_id = id;
+			}
+			else selectmenu.custom_id = Component.generateId('selectmenu');
+
 			max && (selectmenu.max_values = max);
 			min && (selectmenu.min_values = min);
 			defaultValues && (selectmenu.default_values = defaultValues);
@@ -91,16 +101,21 @@ function parseDiscordComponentElement(element) {
 			return selectmenu;
 		}
 		case "option": {
-			return { 
-				...element.props, 
-				label: text ? concatenateTextElements(element.children) : element.props.label 
+			return {
+				...element.props,
+				label: text ? concatenateTextElements(element.children) : element.props.label
 			};
 		}
-		
+
 		case "textinput": {
 			const { isParagraph, isShort, max, min, id, ...textinput } = element.props;
 
-			textinput.custom_id = id ? id : Component.generateId('textinput');
+			if (id) {
+				if (typeof id == 'number') textinput.custom_id = id.toString();
+				else textinput.custom_id = id;
+			}
+			else textinput.custom_id = Component.generateId('textinput');
+
 			max && (textinput.max_length = max);
 			min && (textinput.min_length = min);
 
@@ -119,7 +134,11 @@ function parseDiscordComponentElement(element) {
 		case "modal": {
 			const { id, ...modal } = element.props;
 
-			modal.custom_id = id ? id : Component.generateId('modal');
+			if (id) {
+				if (typeof id == 'number') textinput.custom_id = id.toString();
+				else textinput.custom_id = id;
+			}
+			
 			modal.components = [];
 
 			const textRow = { type: 1, components: [] };
@@ -134,7 +153,7 @@ function parseDiscordComponentElement(element) {
 
 			return modal;
 		}
-    }
+	}
 }
 
 export default parseDiscordComponentElement;

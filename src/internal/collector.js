@@ -1,3 +1,5 @@
+import { _deferred } from '../lib/utils';
+
 export let isConnected = false;
 
 /**
@@ -31,15 +33,26 @@ export function Run(client) {
 
         const response = fn(interaction);
 
-        switch (typeof response) {
-            case 'object':
-            case 'string': 
-                interaction.reply(response);
-                break;
+        const handleResponse = (response) => {
+            switch (typeof response) {
+                case 'object':
+                    if(response.type == _deferred) {
+                        handleResponse(response.value);
+                        collectorState.listeners.delete(interaction.customId);
 
-            case 'undefined':
-                interaction.deferUpdate();
-                break;
+                        break;
+                    }
+    
+                case 'string':
+                    interaction.reply(response);
+                    break;
+    
+                case 'undefined':
+                    interaction.deferUpdate();
+                    break;
+            }
         }
+
+        handleResponse(response);
     })
 }

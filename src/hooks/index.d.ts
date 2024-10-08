@@ -1,3 +1,7 @@
+import Component from "../lib/component";
+
+export const globalHookContexts: WeakMap<Component, {}>
+
 export type Dispatch<A> = (value: A) => void;
 export type StateUpdater<S> = S | ((prevState: S) => S);
 
