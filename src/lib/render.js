@@ -13,7 +13,9 @@ function objectInspect(prop) {
 
 export async function evaluate(target, content, first) {
     switch (true) {
-        case target.constructor.name == 'TextChannel': {
+        case target.constructor.name == 'User':
+        case target.constructor.name == 'GuildMember':
+        case target.constructor.name.includes('Channel') && 'send' in target: {
             target = await target.send(content);
             
             break;
