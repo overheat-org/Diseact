@@ -17,7 +17,6 @@ export const globalHookState = global.DISEACT_HOOK_STATE
     };
 
 export const globalHookContexts = new WeakMap();
-globalHookContexts
 
 function getHookState(index) {
     if (index >= globalHookState.component.hooks.list.length) {
@@ -30,7 +29,6 @@ function getHookState(index) {
 export function useState(initialState) {
     return useReducer(invokeOrReturn, initialState);
 }
-
 
 export function useReducer(reducer, initialState, init) {
     const component = globalHookState.component;

@@ -1,10 +1,12 @@
 import '../jsx-runtime';
-import { TextChannel, CommandInteraction, Interaction, Message } from "discord.js";
+import { TextChannel, CommandInteraction, Interaction, Message, User, GuildMember } from "discord.js";
 
 export type RenderTarget = 
-| Message
-| TextChannel 
-| CommandInteraction;
+    | Message
+    | User
+    | GuildMember
+    | TextChannel 
+    | CommandInteraction;
 
 export function CommandInteractionExecutor(interaction: CommandInteraction): void
 
@@ -13,6 +15,9 @@ export function createElement(type: string, props: { [k: string]: unknown }, ...
 export function render(target: RenderTarget, component: JSX.Component | JSX.Element): Promise<void>
 
 export function JSX(e): any
+
+type Defer = { type: symbol, value: unknown }
+export const useDefer: (value: unknown) => Defer ;
 
 export * from '../hooks/index';
 
