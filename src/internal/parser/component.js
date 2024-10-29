@@ -16,6 +16,7 @@ function parseDiscordComponentElement(element) {
 			}
 			else button.custom_id = Component.generateId('button');
 
+			button.$type = element.type; 
 			button.type = 2;
 
 			switch (true) {
@@ -65,6 +66,8 @@ function parseDiscordComponentElement(element) {
 			min && (selectmenu.min_values = min);
 			defaultValues && (selectmenu.default_values = defaultValues);
 			channelTypes && (selectmenu.channel_types = channelTypes);
+			selectmenu.$type = element.type; 
+
 
 			collectorState.listeners.set(selectmenu.custom_id, onSelect);
 
@@ -118,6 +121,7 @@ function parseDiscordComponentElement(element) {
 
 			max && (textinput.max_length = max);
 			min && (textinput.min_length = min);
+			textinput.$type = element.type;
 
 			switch (true) {
 				case isShort:
@@ -140,6 +144,7 @@ function parseDiscordComponentElement(element) {
 			}
 			
 			modal.components = [];
+			modal.$type = element.type; 
 
 			const textRow = { type: 1, components: [] };
 

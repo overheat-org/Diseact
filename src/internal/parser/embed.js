@@ -6,10 +6,15 @@ function parseEmbedElement(element) {
 		case "description":
 		case "thumbnail":
 		case "fields": {
-			return { prop: element.type, value: concatenateTextElements(element.children) }
+			return { 
+				$type: element.type, 
+				prop: element.type, 
+				value: concatenateTextElements(element.children)
+			}
 		}
 		case "author": {
-			return { 
+			return {
+				$type: element.type, 
 				prop: element.type, 
 				value: { 
 					name: element.props.name ?? concatenateTextElements(element.children), 
@@ -20,6 +25,7 @@ function parseEmbedElement(element) {
 		}
 		case "footer": {
 			return {
+				$type: element.type, 
 				prop: element.type,
 				value: {
 					text: concatenateTextElements(element.children),
@@ -29,10 +35,10 @@ function parseEmbedElement(element) {
 		}
 		case "embed": {
 			const embed = element.props;
-			embed.$symbol = Symbol.for("embed");
+			embed.$type = element.type;
 			
 			for (const child of element.children) {
-				embed[child.prop] = child.value;
+				embed[child.$type] = child.value;
 			}
 			
 			return embed;
@@ -44,7 +50,10 @@ function parseEmbedElement(element) {
 				url = text;
 			}
 
-			return { prop: element.type, value: { url } }
+			return {
+				$type: element.type, 
+				value: { url } 
+			}
 		}
     }
 }

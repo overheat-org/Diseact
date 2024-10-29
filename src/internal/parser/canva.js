@@ -13,8 +13,8 @@ function parseCanvaElement(element) {
 			angle && ctx.rotate(angle);
 
 			for (const child of element.children) {
-				switch (child.type) {
-					case 0:
+				switch (child.$type) {
+					case 'rectangle':
 						if (child.style) {
 							ctx.fillStyle = child.style;
 						}
@@ -23,7 +23,7 @@ function parseCanvaElement(element) {
 
 						break;
 
-					case 1:
+					case 'circle':
 						if (child.style) {
 							ctx.fillStyle = child.style;
 						}
@@ -34,7 +34,7 @@ function parseCanvaElement(element) {
 
 						break;
 
-					case 2:
+					case 'line':
 						if (child.style) {
 							ctx.strokeStyle = child.style;
 						}
@@ -50,7 +50,7 @@ function parseCanvaElement(element) {
 
 						break;
 
-					case 3:
+					case 'img':
 						const img = new Image();
 						const imgData = typeof child.src == 'string' 
 							? fs.readFileSync(child.src)
@@ -63,10 +63,10 @@ function parseCanvaElement(element) {
 
 						break;
 
-					case 4: 
+					case 'path': 
 						break;
 
-					case 5:
+					case 'gradient':
 						const gradient = ctx.createLinearGradient(...child.startGradient, ...child.endGradient);
 
 						for(let i = 0; i < child.colors.length; i++) {
@@ -77,7 +77,7 @@ function parseCanvaElement(element) {
 						
 						break;
 						
-					case 0:
+					case 'text':
 						const opts = [];
 						child.italic && opts.push('italic');
 						child.bold && opts.push('bold');
@@ -98,49 +98,37 @@ function parseCanvaElement(element) {
 				}
 			}
 
-			return canvas.toBuffer()
+			const buf = canvas.toBuffer();
+			buf.$type = element.type;
+
+			return buf;
 		}
-		case 'rectangle': {
-			return {
-				type: 0,
-				...element.props
-			}
-		}
-		case 'circle': {
-			return {
-				type: 1,
-				...element.props
-			}
-		}
-		case 'line': {
-			return {
-				type: 2,
-				...element.props
-			}
-		}
+		case 'rectangle':
+		case 'circle':
+		case 'line':
 		case 'img': {
 			return {
-				type: 3,
+				$type: element.type,
 				...element.props
 			}
 		}
 		case 'path': {
 			return {
-				type: 4,
+				$type: element.type,
 				content: concatenateTextElements(element.children),
 				...element.props
 			};
 		}
 		case 'gradient': {
 			return {
-				type: 5,
+				$type: element.type,
 				content: concatenateTextElements(element.children),
 				...element.props
 			};
 		}
 		case 'text': {
 			return {
-				type: 0,
+				$type: element.type,
 				content: concatenateTextElements(element.children),
 				...element.props
 			};

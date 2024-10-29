@@ -14,7 +14,7 @@
   "scripts": {
     "build": "babel src --out-dir . --copy-files",
     "prepublish": "npm run build",
-    "test": "cls && cd test && tsx --tsconfig ./tsconfig.json --env-file=.env --test"
+    "test": "cls && cd test && babel-node --env-file=.env index.jsx && cd .."
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

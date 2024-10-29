@@ -115,7 +115,7 @@ function parseComponent(element) {
 
 	component.props = element.props;
 	
-	return component;
+	return { $type: component };
 }
 
 export function parseElement(element) {

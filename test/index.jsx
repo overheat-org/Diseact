@@ -11,6 +11,8 @@ const { TEST_CHANNEL, TEST_GUILD, TOKEN } = process.env;
 
 const client = new Discord.Client({ intents: ['Guilds', 'GuildMessages'] });
 
+console.log(<embed></embed>)
+
 client.on('interactionCreate', interaction => {
 	if(!interaction.isCommand()) return;
 	

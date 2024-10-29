@@ -7,6 +7,7 @@ function parseSlashCommandElement(element) {
         case "string": {
 			const { optional, max, min, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 3;
 			option.required = optional ? !optional : true;
@@ -18,6 +19,7 @@ function parseSlashCommandElement(element) {
 		case "boolean": {
 			const { optional, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 5;
 			option.required = optional ? !optional : true;
@@ -27,6 +29,7 @@ function parseSlashCommandElement(element) {
 		case "channel": {
 			const { optional, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 7;
 			option.required = optional ? !optional : true;
@@ -36,6 +39,7 @@ function parseSlashCommandElement(element) {
 		case "user": {
 			const { optional, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 6;
 			option.required = optional ? !optional : true;
@@ -45,6 +49,7 @@ function parseSlashCommandElement(element) {
 		case "role": {
 			const { optional, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 8;
 			option.required = optional ? !optional : true;
@@ -54,6 +59,7 @@ function parseSlashCommandElement(element) {
 		case "mentionable": {
 			const { optional, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 9;
 			option.required = optional ? !optional : true;
@@ -63,6 +69,7 @@ function parseSlashCommandElement(element) {
 		case "attachment": {
 			const { optional, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 11;
 			option.required = optional ? !optional : true;
@@ -72,6 +79,7 @@ function parseSlashCommandElement(element) {
 		case "number": {
 			const { optional, max, min, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 10;
 			option.required = optional ? !optional : true;
@@ -83,6 +91,7 @@ function parseSlashCommandElement(element) {
 		case "integer": {
 			const { optional, max, min, ...option } = element.props;
 
+			option.$type = element.type; 
 			option.description ??= EMPTY_DESCRIPTION;
 			option.type = 4;
 			option.required = optional ? !optional : true;
@@ -94,6 +103,8 @@ function parseSlashCommandElement(element) {
 
 		case "command": {
 			const { localizations, ...command } = element.props;
+
+			command.$type = element.type; 
 			command.description ??= EMPTY_DESCRIPTION;
 			command.options = [];
 			command.type = 1;
@@ -145,6 +156,8 @@ function parseSlashCommandElement(element) {
 		}
 		case "subcommand": {
 			const { localizations, ...subcommand } = element.props;
+
+			subcommand.$type = element.type; 
 			subcommand.description ??= EMPTY_DESCRIPTION;
 			subcommand.options = [];
 			subcommand.type = 1;
@@ -168,6 +181,8 @@ function parseSlashCommandElement(element) {
 		}
 		case "group": {
 			const { localizations, ...group } = element.props;
+
+			group.$type = element.type; 
 			group.description ??= EMPTY_DESCRIPTION;
 			group.options = [];
 			group.type = 2;
