@@ -18,6 +18,7 @@ function parseDiscordComponentElement(element) {
 
 			button.$type = element.type; 
 			button.type = 2;
+			if(!button.label && element.children) button.label = concatenateTextElements(element.children); 
 
 			switch (true) {
 				case isPrimary:
@@ -62,12 +63,11 @@ function parseDiscordComponentElement(element) {
 			}
 			else selectmenu.custom_id = Component.generateId('selectmenu');
 
-			max && (selectmenu.max_values = max);
-			min && (selectmenu.min_values = min);
-			defaultValues && (selectmenu.default_values = defaultValues);
-			channelTypes && (selectmenu.channel_types = channelTypes);
+			if(max) selectmenu.max_values = max;
+			if(min) selectmenu.min_values = min;
+			if(defaultValues) selectmenu.default_values = defaultValues;
+			if(channelTypes) selectmenu.channel_types = channelTypes;
 			selectmenu.$type = element.type; 
-
 
 			collectorState.listeners.set(selectmenu.custom_id, onSelect);
 
@@ -119,8 +119,9 @@ function parseDiscordComponentElement(element) {
 			}
 			else textinput.custom_id = Component.generateId('textinput');
 
-			max && (textinput.max_length = max);
-			min && (textinput.min_length = min);
+			if(!textinput.label && element.children) textinput.label = concatenateTextElements(element.children); 
+			if(max) textinput.max_length = max;
+			if(min) textinput.min_length = min;
 			textinput.$type = element.type;
 
 			switch (true) {
