@@ -54,6 +54,7 @@ function parseIntrinsicElement(element) {
 		case "container": {
 			const container = element.props;
 
+			container.$type = element.type, 
 			container.embeds = [];
 			container.components = [];
 			container.files = [];
@@ -62,35 +63,34 @@ function parseIntrinsicElement(element) {
 			const selectMenuActionRow = { type: 1, components: [] };
 
 			for (const child of element.children) {
-				switch (true) {
-					case child.$symbol == Symbol.for("embed"): {
+				switch (child.$type) {
+					case 'embed': {
 						container.embeds.push(child);
 
 						break;
 					}
-					case child.type == 2: {
+					case 'button': {
 						btnActionRow.components.push(child);
 
 						break;
 					}
-					case child.type == 3:
-					case child.type >= 5 && child.type <= 8: {
+					case 'selectmenu': {
 						selectMenuActionRow.components.push(child);
 
 						break;
 					}
-					case Buffer.isBuffer(child): {
+					case 'canva': {
 						container.files.push({ attachment: child });
 
 						break;
 					}
-					case child.type == 'TEXT_ELEMENT': {
+					case 'TEXT_ELEMENT': {
 						container.content += child.props.value;
 						
 						break;
 					}
 					default:
-						throw new Error(`Cannot use element "${child.type}" in opts`);
+						throw new Error(`Cannot use element "${child.$type}" in opts`);
 				}
 			}
 
@@ -111,21 +111,18 @@ function parseIntrinsicElement(element) {
 }
 
 function parseComponent(element) {
-	const component = new Component(element.type);
-
-	component.props = element.props;
-	
-	return { $type: component };
+	return element.type(element.props);
 }
 
 export function parseElement(element) {
-	if (typeof element.type === "function") {
-		return parseComponent(element);
-	}
+	switch(typeof element.type) {
+		case 'function':
+			return parseComponent(element);
 
-	if (typeof element.type == "string") {
-		return parseIntrinsicElement(element);
+		case 'string':
+			return parseIntrinsicElement(element);
+			
+		default:
+			throw new Error("Unknown element on render " + element.type);
 	}
-
-	throw new Error("Unknown element on render " + element.type);
 }

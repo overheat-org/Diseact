@@ -67,12 +67,14 @@ export async function renderComponent(component) {
     }
 }
 
-export async function render(target, component) {
+export async function render(target, element) {
     if(!collector.isConnected) {
         collector.Run(target.client);
     }
 
-    if (component.constructor.name == Component.name) {
+    if (typeof element == 'function') {
+        const component = new Component(element);
+
         component.target = target;
         component.id = randomBytes(2).toString('hex');
         enqueueRender(component);

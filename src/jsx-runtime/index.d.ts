@@ -41,10 +41,7 @@ import {
 declare global {
 	namespace JSX {
 		type Component = (...args: unknown[]) => Element
-		type Element = { 
-			type: string, 
-			props: any, 
-		};
+		type Element = any;
 		type Node = Element[];
 		type IntrinsicElement<T> = T;
 

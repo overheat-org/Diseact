@@ -1,6 +1,6 @@
 import { commandMap } from "../../internal/executor";
 
-const EMPTY_DESCRIPTION = "empty"
+const EMPTY_DESCRIPTION = "empty";
 
 function parseSlashCommandElement(element) {
     switch (element.type) {

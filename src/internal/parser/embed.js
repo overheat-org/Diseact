@@ -44,10 +44,12 @@ function parseEmbedElement(element) {
 			return embed;
 		}
 		case "image": {
-			if(text.type == 'TEXT_ELEMENT') {
+			let url;
+			
+			if(element.$type == 'TEXT_ELEMENT') {
 				url = concatenateTextElements(element.children);
 			} else {
-				url = text;
+				url = element;
 			}
 
 			return {

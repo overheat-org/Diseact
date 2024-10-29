@@ -26,9 +26,9 @@ client.once('ready', async () => {
 
 	guild.commands.set(fs.readdirSync(j(__dirname, "commands")).map(p => require(j(__dirname, "commands", p)).default))
 
-	Diseact.render(channel, <Counter />);
-	// Diseact.render(channel, <Select />);
-	// Diseact.render(channel, <ImageGen />);
+	Diseact.render(channel, Counter);
+	// Diseact.render(channel, Select);
+	// Diseact.render(channel, ImageGen);
 });
 
 client.login(TOKEN);
