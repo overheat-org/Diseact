@@ -1,7 +1,7 @@
 import { Fragment, createElement } from './create-element';
 import { useEffect, useState } from '../hooks';
 import { render } from './render';
-import { CommandInteractionExecutor } from '../internal/executor';
+import { CommandInteractionExecutor, commandMap } from '../internal/executor';
 import { JSX } from './utils';
 
 export {
@@ -11,6 +11,7 @@ export {
 	Fragment,
 	createElement,
 	CommandInteractionExecutor,
+	commandMap,
 	JSX
 }
 
