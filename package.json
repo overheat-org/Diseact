@@ -1,6 +1,6 @@
 {
   "name": "diseact",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "keywords": [
     "discord.js",
