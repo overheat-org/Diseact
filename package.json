@@ -45,11 +45,11 @@
   "exports": {
     ".": {
       "import": "./esm/index.js",
-      "require": "./lib/index.js"
+      "require": "./cjs/index.js"
     },
     "./jsx-runtime": {
       "import": "./esm/jsx-runtime/index.js",
-      "require": "./lib/jsx-runtime/index.js"
+      "require": "./cjs/jsx-runtime/index.js"
     }
   },
   "type": "module",
