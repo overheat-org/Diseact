@@ -17,7 +17,7 @@
     "test": "cls && cd test && babel-node --env-file=.env index.jsx && cd .."
   },
   "main": "cjs/index.js",
-  "types": "lib/index.d.ts",
+  "types": "types/lib/index.d.ts",
   "author": {
     "name": "</Nexus_Prime>",
     "url": "https://nexusprime.vercel.app/"
@@ -25,14 +25,15 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.24.8",
-    "@babel/plugin-transform-runtime": "^7.24.7",
     "@babel/core": "^7.24.9",
     "@babel/node": "^7.25.0",
+    "@babel/plugin-transform-runtime": "^7.24.7",
     "@babel/preset-env": "^7.25.0",
     "@babel/preset-react": "^7.24.7",
+    "canvas": "^2.11.2",
+    "copyfiles": "^2.4.1",
     "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5",
-    "canvas": "^2.11.2"
+    "dotenv": "^16.4.5"
   },
   "optionalDependencies": {
     "canvas": "^2.11.2",
