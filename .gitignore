@@ -1,7 +1,5 @@
 package-lock.json
 node_modules
 test/.env
-/hooks
-/internal
-/jsx-runtime
-/lib
+cjs
+esm

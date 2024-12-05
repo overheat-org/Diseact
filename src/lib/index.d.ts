@@ -22,3 +22,5 @@ export const useDefer: (value: unknown) => Defer ;
 export * from '../hooks/index';
 
 type ExecutionFunction = (interaction: Interaction) => unknown;
+
+export const commandMap: Map<string, Function>

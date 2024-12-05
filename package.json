@@ -1,6 +1,6 @@
 {
   "name": "diseact",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "keywords": [
     "discord.js",
@@ -12,11 +12,11 @@
     "command"
   ],
   "scripts": {
-    "build": "babel src --out-dir . --copy-files",
+    "build": "sh ./build.sh",
     "prepublish": "npm run build",
     "test": "cls && cd test && babel-node --env-file=.env index.jsx && cd .."
   },
-  "main": "lib/index.js",
+  "main": "cjs/index.js",
   "types": "lib/index.d.ts",
   "author": {
     "name": "</Nexus_Prime>",
@@ -40,5 +40,59 @@
   },
   "workspaces": [
     "test"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./lib/index.js"
+    },
+    "./jsx-runtime": {
+      "import": "./esm/jsx-runtime/index.js",
+      "require": "./lib/jsx-runtime/index.js"
+    }
+  },
+  "type": "module",
+  "module": "./esm/index.js",
+  "babel": {
+    "env": {
+      "cjs": {
+        "presets": [
+          [
+            "@babel/preset-env",
+            {
+              "targets": "node 21",
+              "modules": "commonjs"
+            }
+          ]
+        ],
+        "plugins": [
+          [
+            "@babel/plugin-transform-runtime",
+            {
+              "helpers": false
+            }
+          ]
+        ]
+      },
+      "esm": {
+        "presets": [
+          [
+            "@babel/preset-env",
+            {
+              "targets": "node 21",
+              "modules": false
+            }
+          ]
+        ],
+        "plugins": [
+          [
+            "@babel/plugin-transform-runtime",
+            {
+              "helpers": false
+            }
+          ]
+        ]
+      }
+    }
+  }
 }
