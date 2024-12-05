@@ -1,29 +1,48 @@
 {
     "env": {
         "esm": {
-          "presets": [
-            [
-              "@babel/preset-env",
-              {
-                "targets": "node 21",
-                "modules": false
-              }
-            ]
-          ],
-          "plugins": [
-            [
-              "@babel/plugin-transform-runtime",
-              {
-                "helpers": false
-              }
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": "node 21",
+                        "modules": false
+                    }
+                ]
             ],
-            [
-              "babel-plugin-add-import-extension",
-              {
-                "extension": "js"
-              }
+            "plugins": [
+                [
+                    "@babel/plugin-transform-runtime",
+                    {
+                        "helpers": false
+                    }
+                ],
+                [
+                    "babel-plugin-add-import-extension",
+                    {
+                        "extension": "js"
+                    }
+                ]
             ]
-          ]
-        }
-      }
+        },
+        "cjs": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": "node 21",
+                        "modules": "commonjs"
+                    }
+                ]
+            ],
+            "plugins": [
+                [
+                    "@babel/plugin-transform-runtime",
+                    {
+                        "helpers": false
+                    }
+                ]
+            ]
+        },
+    }
 }
