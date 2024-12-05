@@ -1,6 +1,6 @@
 {
   "name": "diseact",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "keywords": [
     "discord.js",
@@ -44,8 +44,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./esm/index.js",
-      "require": "./cjs/index.js"
+      "import": "./esm/lib/index.js",
+      "require": "./cjs/lib/index.js"
     },
     "./jsx-runtime": {
       "import": "./esm/jsx-runtime/index.js",
