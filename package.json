@@ -1,6 +1,6 @@
 {
   "name": "diseact",
-  "version": "4.2.2",
+  "version": "4.2.4",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "keywords": [
     "discord.js",
@@ -30,6 +30,7 @@
     "@babel/plugin-transform-runtime": "^7.24.7",
     "@babel/preset-env": "^7.25.0",
     "@babel/preset-react": "^7.24.7",
+    "babel-plugin-add-import-extension": "^1.6.0",
     "canvas": "^2.11.2",
     "copyfiles": "^2.4.1",
     "discord.js": "^14.15.3",
@@ -53,47 +54,5 @@
     }
   },
   "type": "module",
-  "module": "./esm/index.js",
-  "babel": {
-    "env": {
-      "cjs": {
-        "presets": [
-          [
-            "@babel/preset-env",
-            {
-              "targets": "node 21",
-              "modules": "commonjs"
-            }
-          ]
-        ],
-        "plugins": [
-          [
-            "@babel/plugin-transform-runtime",
-            {
-              "helpers": false
-            }
-          ]
-        ]
-      },
-      "esm": {
-        "presets": [
-          [
-            "@babel/preset-env",
-            {
-              "targets": "node 21",
-              "modules": false
-            }
-          ]
-        ],
-        "plugins": [
-          [
-            "@babel/plugin-transform-runtime",
-            {
-              "helpers": false
-            }
-          ]
-        ]
-      }
-    }
-  }
+  "module": "./esm/index.js"
 }
