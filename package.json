@@ -1,7 +1,8 @@
 {
   "name": "diseact",
-  "version": "4.3.2",
+  "version": "4.3.4",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
+  "type": "module",
   "keywords": [
     "discord.js",
     "discord",
@@ -16,8 +17,7 @@
     "prepublish": "npm run build",
     "test": "cls && cd test && babel src --out-dir dist && node --env-file=.env dist/index.js && cd .."
   },
-  "main": "cjs/index.js",
-  "types": "lib/index.d.ts",
+
   "author": {
     "name": "</Nexus_Prime>",
     "url": "https://nexusprime.vercel.app/"
@@ -48,16 +48,18 @@
   "workspaces": [
     "test"
   ],
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
       "import": "./lib/index.mjs",
-      "require": "./lib/index.cjs"
+      "require": "./lib/index.cjs",
+      "types": "./lib/index.d.ts"
     },
     "./jsx-runtime": {
       "import": "./jsx-runtime/index.mjs",
-      "require": "./jsx-runtime/index.cjs"
+      "require": "./jsx-runtime/index.cjs",
+      "types": "./jsx-runtime/index.d.ts"
     }
-  },
-  "type": "module",
-  "module": "./esm/index.js"
+  }
 }
