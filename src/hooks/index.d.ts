@@ -1,4 +1,4 @@
-import Component from "../lib/component";
+import Component from "../lib/component.d.ts";
 
 export const globalHookContexts: WeakMap<Component, {}>
 

@@ -36,7 +36,7 @@ import {
 	Text,
 	Message,
 	Interaction
-} from "../lib/entities";
+} from "../lib/entities.d.ts";
 
 declare global {
 	namespace JSX {

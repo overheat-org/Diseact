@@ -1,4 +1,4 @@
-import '../jsx-runtime';
+import '../jsx-runtime/index.d.ts';
 import { TextChannel, CommandInteraction, Interaction, Message, User, GuildMember } from "discord.js";
 
 export type RenderTarget = 
@@ -19,7 +19,7 @@ export function JSX(e): any
 type Defer = { type: symbol, value: unknown }
 export const useDefer: (value: unknown) => Defer ;
 
-export * from '../hooks/index';
+export * from '../hooks/index.d.ts';
 
 type ExecutionFunction = (interaction: Interaction) => unknown;
 
