@@ -1,4 +1,4 @@
-import { parseElement } from '../internal/parser';
+import { parseElement } from '../internal/parser/index';
 
 const EMPTY_ARRAY = Object.freeze([]);
 

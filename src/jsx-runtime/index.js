@@ -1,4 +1,4 @@
-import { createElement, Fragment } from '../lib';
+import { createElement, Fragment } from '../lib/index';
 
 const jsx = (type, _props) => {
     let { children, ...props } = _props;

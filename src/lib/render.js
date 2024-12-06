@@ -1,6 +1,6 @@
 import util from 'util';
 import { DISEACT_DEV } from "../internal/debug";
-import { flushEffects, globalHookState } from "../hooks";
+import { flushEffects, globalHookState } from "../hooks/index";
 import * as collector from '../internal/collector';
 import { randomBytes } from 'crypto';
 import { enqueueRender } from '../internal/render';
