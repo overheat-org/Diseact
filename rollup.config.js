@@ -5,24 +5,34 @@ execSync('copyfiles -u 1 "src/**/*.d.ts" ./')
 /**
  * @type {import('rollup').RollupOptions}
  */
+const default_config = {
+    input: ['src/lib/index.js', 'src/jsx-runtime/index.js'],
+    output: {
+        dir: './',
+        preserveModules: true,
+    },
+    external: ['util', 'crypto', 'canvas']
+}
+
+/**
+ * @type {import('rollup').RollupOptions}
+ */
 const config = [
     {
-        input: ['src/lib/index.js', 'src/jsx-runtime/index.js'],
+        ...default_config,
         output: {
-            dir: './',
+            ...default_config.output,
             format: 'es',
             entryFileNames: '[name].mjs',
-            preserveModules: true,
-        }
+        },
     },
     {
-        input: ['src/lib/index.js', 'src/jsx-runtime/index.js'],
+        ...default_config,
         output: {
-            dir: './',
+            ...default_config.output,
             format: 'cjs',
             entryFileNames: '[name].cjs',
-            preserveModules: true,
-        }
+        },
     }
 ]
 

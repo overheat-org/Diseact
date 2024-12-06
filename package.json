@@ -1,6 +1,6 @@
 {
   "name": "diseact",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "keywords": [
     "discord.js",
@@ -14,7 +14,7 @@
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "prepublish": "npm run build",
-    "test": "cls && cd test && babel-node --env-file=.env index.jsx && cd .."
+    "test": "cls && cd test && babel src --out-dir dist && node --env-file=.env dist/index.js && cd .."
   },
   "main": "cjs/index.js",
   "types": "lib/index.d.ts",
@@ -37,7 +37,9 @@
     "copyfiles": "^2.4.1",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
-    "esbuild": "^0.24.0"
+    "esbuild": "^0.24.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
+    "rollup": "^4.28.0"
   },
   "optionalDependencies": {
     "canvas": "^2.11.2",
@@ -57,9 +59,5 @@
     }
   },
   "type": "module",
-  "module": "./esm/index.js",
-  "dependencies": {
-    "esbuild-plugin-file-path-extensions": "^2.1.4",
-    "rollup": "^4.28.0"
-  }
+  "module": "./esm/index.js"
 }
