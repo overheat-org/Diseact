@@ -12,7 +12,7 @@
     "command"
   ],
   "scripts": {
-    "build": "node build.cjs",
+    "build": "rollup --config rollup.config.js",
     "prepublish": "npm run build",
     "test": "cls && cd test && babel-node --env-file=.env index.jsx && cd .."
   },
@@ -59,6 +59,7 @@
   "type": "module",
   "module": "./esm/index.js",
   "dependencies": {
-    "esbuild-plugin-file-path-extensions": "^2.1.4"
+    "esbuild-plugin-file-path-extensions": "^2.1.4",
+    "rollup": "^4.28.0"
   }
 }
