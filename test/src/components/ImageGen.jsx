@@ -1,7 +1,7 @@
-const Diseact = require('diseact');
+import { useState } from 'diseact';
 
 function ImageGeneration() {
-    const [option, setOption] = Diseact.useState('square');
+    const [option, setOption] = useState('square');
 
     const handleSelection = (i) => {
         setOption(i.values[0]);
@@ -22,4 +22,4 @@ function ImageGeneration() {
     </message>
 }
 
-module.exports = ImageGeneration;
+export default ImageGeneration;

@@ -1,7 +1,7 @@
-const Diseact = require("diseact");
+import { useState } from "diseact";
 
 function Counter() {
-    const [count, setCount] = Diseact.useState(0);
+    const [count, setCount] = useState(0);
 
     const handleIncrement = () => {
         setCount(c => c + 1);
@@ -31,4 +31,4 @@ function Counter() {
     </message>
 }
 
-module.exports = Counter;
+export default Counter;

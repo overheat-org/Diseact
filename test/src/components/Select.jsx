@@ -1,7 +1,7 @@
-const Diseact = require("diseact");
+import { useState } from "diseact";
 
 function Select() {
-    const [option, setOption] = Diseact.useState(null);
+    const [option, setOption] = useState(null);
 
     const handleSelection = (i) => {
         setOption(i.values[0])
@@ -20,4 +20,4 @@ function Select() {
     </message>
 }
 
-module.exports = Select
+export default Select
