@@ -1,4 +1,4 @@
-import { globalHookState } from "../hooks/index";
+import { globalHookState } from "../hooks/index.js";
 
 const acceptedTypes = {
     "button": 1,

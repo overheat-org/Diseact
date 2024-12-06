@@ -1,5 +1,5 @@
-import { process } from "./process";
-import { defer } from "../lib/utils";
+import { process } from "./process.js";
+import { defer } from "../lib/utils.js";
 
 export let rerenderQueue = [];
 

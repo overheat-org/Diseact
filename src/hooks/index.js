@@ -1,4 +1,4 @@
-import { enqueueRender } from '../internal/render';
+import { enqueueRender } from '../internal/render.js';
 
 /** @type {{ component?: object, index: number }} */
 export const globalHookState = global.DISEACT_HOOK_STATE 

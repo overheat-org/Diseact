@@ -1,4 +1,4 @@
-import { commandMap } from "../../internal/executor";
+import { commandMap } from "../../internal/executor.js";
 
 const EMPTY_DESCRIPTION = "empty";
 

@@ -1,5 +1,5 @@
-import { rerenderQueue } from "../internal/render";
-import { renderComponent } from "../lib/render";
+import { rerenderQueue } from "../internal/render.js";
+import { renderComponent } from "../lib/render.js";
 
 let isProcessing = false;
 

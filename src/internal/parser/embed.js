@@ -1,4 +1,4 @@
-import { concatenateTextElements } from "../../lib/utils";
+import { concatenateTextElements } from "../../lib/utils.js";
 
 function parseEmbedElement(element) {
     switch (element.type) {

@@ -1,10 +1,10 @@
 import util from 'util';
-import { DISEACT_DEV } from "../internal/debug";
-import { flushEffects, globalHookState } from "../hooks/index";
-import * as collector from '../internal/collector';
+import { DISEACT_DEV } from "../internal/debug.js";
+import { flushEffects, globalHookState } from "../hooks/index.js";
+import * as collector from '../internal/collector.js';
 import { randomBytes } from 'crypto';
-import { enqueueRender } from '../internal/render';
-import Component from './component';
+import { enqueueRender } from '../internal/render.js';
+import Component from './component.js';
 
 function objectInspect(prop) {
     return util.inspect(prop, { colors: true, depth: 3 });

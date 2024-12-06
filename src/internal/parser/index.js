@@ -1,8 +1,8 @@
-import parseSlashCommandElement from "./slashcommand";
-import parseDiscordComponentElement from "./component";
-import parseCanvaElement from "./canva";
-import parseEmbedElement from "./embed"; 
-import Component from "../../lib/component";
+import parseSlashCommandElement from "./slashcommand.js";
+import parseDiscordComponentElement from "./component.js";
+import parseCanvaElement from "./canva.js";
+import parseEmbedElement from "./embed.js"; 
+import Component from "../../lib/component.js";
 
 // TODO: fazer as polls
 

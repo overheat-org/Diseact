@@ -1,4 +1,4 @@
-import { _deferred } from '../lib/utils';
+import { _deferred } from '../lib/utils.js';
 
 export let isConnected = false;
 

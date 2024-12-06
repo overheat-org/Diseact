@@ -1,5 +1,5 @@
 import { createCanvas } from "canvas";
-import { concatenateTextElements } from "../../lib/utils";
+import { concatenateTextElements } from "../../lib/utils.js";
 
 function parseCanvaElement(element) {
     switch (element.type) {

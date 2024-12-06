@@ -1,6 +1,6 @@
-import { concatenateTextElements } from "../../lib/utils";
-import Component from "../../lib/component";
-import { collectorState } from "../collector";
+import { concatenateTextElements } from "../../lib/utils.js";
+import Component from "../../lib/component.js";
+import { collectorState } from "../collector.js";
 
 function parseDiscordComponentElement(element) {
 	switch (element.type) {
