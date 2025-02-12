@@ -1,5 +1,3 @@
-import { commandMap } from "../../internal/executor.js";
-
 const EMPTY_DESCRIPTION = "empty";
 
 function parseSlashCommandElement(element) {
@@ -104,10 +102,13 @@ function parseSlashCommandElement(element) {
 		case "command": {
 			const { localizations, ...command } = element.props;
 
+			const commandMap = {};
+			
 			command.$type = element.type; 
 			command.description ??= EMPTY_DESCRIPTION;
 			command.options = [];
 			command.type = 1;
+			command.__map__ = commandMap;
 
 			if (localizations) {
 				command.name_localizations = localizations.name;
@@ -118,7 +119,7 @@ function parseSlashCommandElement(element) {
 				if (typeof child == "function") {
 					command.run = child;
 
-					commandMap.set(command.name, command.run);
+					commandMap[command.name] = command.run;
 
 					continue;
 				}
@@ -127,7 +128,7 @@ function parseSlashCommandElement(element) {
 					case 1: {
 						const { run, ...subcommand } = child;
 
-						commandMap.set(`${command.name} ${subcommand.name}`, run);
+						commandMap[`${command.name} ${subcommand.name}`] = run;
 						
 						command.options.push(subcommand);
 
@@ -137,7 +138,7 @@ function parseSlashCommandElement(element) {
 						const { ...group } = child;
 
 						for (const { run, ...subcommand } of group.options) {
-							commandMap.set(`${command.name} ${group.name} ${subcommand.name}`, run);
+							commandMap[`${command.name} ${group.name} ${subcommand.name}`] = run;
 						}
 
 						command.options.push(group);

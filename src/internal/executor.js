@@ -1,32 +1,37 @@
-/**
- * @type {Map<string, Function>}
- */
-export const commandMap = global.DISEACT_COMMAND_MAP ?? new Map();
+export const autocompleteMap = global.DISEACT_AUTOCOMPLETE_MAP ?? new Map();
 
-/**
- * @param {import("discord.js").CommandInteraction} interaction 
- */
-export function CommandInteractionExecutor(interaction) {
-    const commandName = interaction.commandName;
-    let groupName = undefined;
-    let subcommandName = undefined;
-
-    try {
-        groupName = interaction.options.getSubcommandGroup();
-        subcommandName = interaction.options.getSubcommand(); 
-    } catch {}
-
-    let path;
-
-    if(groupName) {
-        path = `${commandName} ${groupName} ${subcommandName}`;
+class InteractionExecutor {
+    /**
+     * @param {import("discord.js").ChatInputCommandInteraction | import('discord.js').AutocompleteInteraction} interaction 
+     */
+    run(interaction) {
+        const commandName = interaction.commandName;
+        let groupName = undefined;
+        let subcommandName = undefined;
+    
+        try {
+            groupName = interaction.options.getSubcommandGroup();
+            subcommandName = interaction.options.getSubcommand(); 
+        } catch {}
+    
+        let path;
+    
+        if(groupName) {
+            path = `${commandName} ${groupName} ${subcommandName}`;
+        }
+        else if(subcommandName) {
+            path = `${commandName} ${subcommandName}`;
+        }
+        else {
+            path = commandName;
+        }
+    
+        (interaction.isChatInputCommand() ? commandMap : autocompleteMap)[path]?.(interaction);
     }
-    else if(subcommandName) {
-        path = `${commandName} ${subcommandName}`;
+    
+    putCommands(commandMap) {
+        this.commandMap = commandMap;
     }
-    else {
-        path = commandName;
-    }
-
-    commandMap.get(path)?.(interaction);
 }
+
+export default InteractionExecutor
