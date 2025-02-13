@@ -5,3 +5,4 @@ test/.env
 /internal/
 /lib/
 /jsx-runtime/
+test/dist

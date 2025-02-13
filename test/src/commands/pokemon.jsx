@@ -1,5 +1,5 @@
-import Diseact from 'diseact';
-import Pokemon from '../components/Pokemon';
+import * as Diseact from 'diseact';
+import Pokemon from '../components/Pokemon.js';
 
 export default (
     <command name="pokemon" description="Show a pokemon">

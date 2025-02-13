@@ -1,6 +1,6 @@
 export const autocompleteMap = global.DISEACT_AUTOCOMPLETE_MAP ?? new Map();
 
-class InteractionExecutor {
+export class InteractionExecutor {
     /**
      * @param {import("discord.js").ChatInputCommandInteraction | import('discord.js').AutocompleteInteraction} interaction 
      */
@@ -26,12 +26,20 @@ class InteractionExecutor {
             path = commandName;
         }
     
-        (interaction.isChatInputCommand() ? commandMap : autocompleteMap)[path]?.(interaction);
+        (interaction.isChatInputCommand() ? this.commandMap : autocompleteMap)[path]?.(interaction);
     }
     
-    putCommands(commandMap) {
-        this.commandMap = commandMap;
+    /** 
+     * @param {{ __map__: { [key: string]: Function } }[]} commands 
+     */
+    putCommands(commands) {
+        let map = {}
+        
+        for(const command of commands) {
+
+            map = { ...map, ...command.__map__ }
+        }
+        
+        this.commandMap = map;
     }
 }
-
-export default InteractionExecutor

@@ -8,7 +8,11 @@ export type RenderTarget =
     | TextChannel 
     | CommandInteraction;
 
-export function CommandInteractionExecutor(interaction: CommandInteraction): void
+export class InteractionExecutor {
+    run(interaction: Interaction): void;
+
+    putCommands(commands: JSX.Element[]): void;
+}
 
 export function createElement(type: string, props: { [k: string]: unknown }, ...children: JSX.Element[]): JSX.Element;
 
@@ -19,8 +23,6 @@ export function JSX(e): any
 type Defer = { type: symbol, value: unknown }
 export const useDefer: (value: unknown) => Defer ;
 
-export * from '../hooks/index.d.ts';
-
 type ExecutionFunction = (interaction: Interaction) => unknown;
 
-export const commandMap: Map<string, Function>
+export * from '../hooks/index.d.ts';
