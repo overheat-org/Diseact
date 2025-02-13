@@ -1,4 +1,4 @@
-export const autocompleteMap = global.DISEACT_AUTOCOMPLETE_MAP ?? new Map();
+export const autocompleteMap = globalThis.DISEACT_AUTOCOMPLETE_MAP ?? new Map();
 
 export class InteractionExecutor {
     /**
