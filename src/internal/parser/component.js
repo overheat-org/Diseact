@@ -6,7 +6,7 @@ function parseDiscordComponentElement(element) {
 	switch (element.type) {
 		case "button": {
 			const {
-				isPrimary, isSecondary, isDanger, isSuccess, isLink, isPremium,
+				primary, secondary, danger, success, link, premium,
 				onClick, id, ...button
 			} = element.props;
 
@@ -21,22 +21,22 @@ function parseDiscordComponentElement(element) {
 			if(!button.label && element.children) button.label = concatenateTextElements(element.children); 
 
 			switch (true) {
-				case isPrimary:
+				case primary:
 					button.style = 1;
 					break;
-				case isSecondary:
+				case secondary:
 					button.style = 2;
 					break;
-				case isSuccess:
+				case success:
 					button.style = 3;
 					break;
-				case isDanger:
+				case danger:
 					button.style = 4;
 					break;
-				case isLink:
+				case link:
 					button.style = 5;
 					break;
-				case isPremium:
+				case premium:
 					button.style = 6;
 					break;
 
@@ -51,7 +51,7 @@ function parseDiscordComponentElement(element) {
 		}
 		case "selectmenu": {
 			const {
-				isUser, isChannel, isRole, isMentionable, isString,
+				user, channel, role, mentionable, string,
 				defaultUsers, defaultChannels, defaultRoles, defaultMentionables,
 				channelTypes, onSelect, max, min, id, ...selectmenu
 			} = element.props;
@@ -72,24 +72,24 @@ function parseDiscordComponentElement(element) {
 			collectorState.listeners.set(selectmenu.custom_id, onSelect);
 
 			switch (true) {
-				case isString:
+				case string:
 					selectmenu.type = 3;
 					selectmenu.options = [];
 					break;
 
-				case isUser:
+				case user:
 					selectmenu.type = 5;
 					break;
 
-				case isRole:
+				case role:
 					selectmenu.type = 6;
 					break;
 
-				case isMentionable:
+				case mentionable:
 					selectmenu.type = 7;
 					break;
 
-				case isChannel:
+				case channel:
 					selectmenu.type = 8;
 					break;
 
@@ -111,7 +111,7 @@ function parseDiscordComponentElement(element) {
 		}
 
 		case "textinput": {
-			const { isParagraph, isShort, max, min, id, ...textinput } = element.props;
+			const { paragraph, short, max, min, id, ...textinput } = element.props;
 
 			if (id) {
 				if (typeof id == 'number') textinput.custom_id = id.toString();
@@ -125,10 +125,10 @@ function parseDiscordComponentElement(element) {
 			textinput.$type = element.type;
 
 			switch (true) {
-				case isShort:
+				case short:
 					textinput.style = 1;
 					break;
-				case isParagraph:
+				case paragraph:
 					textinput.style = 2;
 					break;
 				default: throw new Error('TextInput style not found');

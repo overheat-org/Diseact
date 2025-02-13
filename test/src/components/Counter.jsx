@@ -18,13 +18,13 @@ function Counter() {
         </embed>
 
         <button
-            isSuccess
+            success
             label='+'
             onClick={handleIncrement}
         />
 
         <button
-            isDanger
+            danger
             label='-'
             onClick={handleDecrement}
         />

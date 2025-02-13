@@ -13,7 +13,7 @@ function Select() {
             <description>{option ? `Selected: ${option}` : 'Nothing'}</description>
         </embed>
 
-        <selectmenu isString max={1} placeholder="Select" onSelect={handleSelection}>
+        <selectmenu string max={1} placeholder="Select" onSelect={handleSelection}>
             <option value='cat' label='Cat'>It's a cat</option>
             <option value='dog' label='Dog'>It's a dog</option>
         </selectmenu>

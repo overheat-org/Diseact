@@ -15,7 +15,7 @@ function ImageGeneration() {
             }
         </canvas>
 
-        <selectmenu isString max={1} placeholder="Select" onSelect={handleSelection}>
+        <selectmenu string max={1} placeholder="Select" onSelect={handleSelection}>
             <option value='square'>Square</option>
             <option value='circle'>Circle</option>
         </selectmenu>

@@ -107,32 +107,32 @@ interface ButtonBased {
 }
 
 interface LinkButton extends ButtonBased {
-	isLink: true;
+	link: true;
 	url: string;
 }
 
 interface PrimaryButton extends ButtonBased, ComponentBased {
-	isPrimary: true;
+	primary: true;
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
 interface SecondaryButton extends ButtonBased, ComponentBased {
-	isSecondary: true;
+	secondary: true;
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
 interface SuccessButton extends ButtonBased, ComponentBased {
-	isSuccess: true;
+	success: true;
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
 interface DangerButton extends ButtonBased, ComponentBased {
-	isDanger: true;
+	danger: true;
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
 interface PremiumButton extends ButtonBased, ComponentBased {
-	isPremium: true;
+	premium: true;
 	onClick?(interaction: ButtonInteraction): unknown
 }
 
@@ -152,26 +152,26 @@ interface BaseSelectMenu extends ComponentBased {
 }
 
 export interface UserSelectMenu extends BaseSelectMenu {
-	isUser: true
+	user: true
 	defaultUsers: string[];
 	onSelect?(interaction: UserSelectMenuInteraction): unknown
 }
 
 export interface ChannelSelectMenu extends BaseSelectMenu {
-	isChannel: true
+	channel: true
 	defaultChannels: string[]
 	channelTypes: ChannelType[]
 	onSelect?(interaction: ChannelSelectMenuInteraction): unknown
 }
 
 export interface RoleSelectMenu extends BaseSelectMenu {
-	isRole: true
+	role: true
 	defaultRoles: string[]
 	onSelect?(interaction: RoleSelectMenuInteraction): unknown
 }
 
 export interface MentionableSelectMenu extends BaseSelectMenu {
-	isMentionable: true
+	mentionable: true
 	defaultMentionables: (
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.Role>
 		| APISelectMenuDefaultValue<SelectMenuDefaultValueType.User>
@@ -180,7 +180,7 @@ export interface MentionableSelectMenu extends BaseSelectMenu {
 }
 
 export interface StringSelectMenu extends BaseSelectMenu {
-	isString: true
+	string: true
 	default?: string
 	onSelect?(interaction: StringSelectMenuInteraction): unknown
 }
