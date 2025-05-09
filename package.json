@@ -1,6 +1,6 @@
 {
   "name": "diseact",
-  "version": "4.5.0",
+  "version": "5.0.0",
   "description": "A package to make Discord Embeds, Components and Commands using JSX",
   "type": "module",
   "keywords": [
@@ -17,7 +17,6 @@
     "prepublish": "npm run build",
     "test": "cls && cd test && babel src --out-dir dist && node --env-file=.env dist/index.js && cd .."
   },
-
   "author": {
     "name": "</Nexus_Prime>",
     "url": "https://nexusprime.vercel.app/"
@@ -33,16 +32,15 @@
     "@babel/traverse": "^7.26.3",
     "@babel/types": "^7.26.3",
     "babel-plugin-add-import-extension": "^1.6.0",
-    "canvas": "^2.11.2",
     "copyfiles": "^2.4.1",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "esbuild": "^0.24.0",
-    "rollup-plugin-polyfill-node": "^0.13.0",
-    "rollup": "^4.28.0"
+    "rollup": "^4.28.0",
+    "rollup-plugin-polyfill-node": "^0.13.0"
   },
   "optionalDependencies": {
-    "canvas": "^2.11.2",
+    "@napi-rs/canvas": "^0.1.70",
     "discord.js": "^14.16.2"
   },
   "workspaces": [
