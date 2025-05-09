@@ -1,4 +1,4 @@
-const UNLOADED = new Symbol();
+const UNLOADED = Symbol();
 
 // loader.js
 let createCanvas = UNLOADED, Image = UNLOADED;
