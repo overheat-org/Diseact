@@ -11,7 +11,8 @@ const default_config = {
         dir: './',
         preserveModules: true,
     },
-    external: ['util', 'crypto', '@napi-rs/canvas']
+    external: ['util', 'crypto', '@napi-rs/canvas'],
+    treeshake: false
 }
 
 /**
