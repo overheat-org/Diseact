@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "declaration": false,
+        "checkJs": true,
+        "paths": {
+            "@lib/*": ["./src/lib/*"],
+            "@internal/*": ["./src/internal/*"]
+        },
+        "noImplicitAny": false
+    },
+    "include": ["./src/**/*"],
+}

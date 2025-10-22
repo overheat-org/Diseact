@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "jsxImportSource": "@jsx-oh/discord",
+        "jsx": "react-jsx"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
