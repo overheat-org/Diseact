@@ -44,8 +44,8 @@ export default function Home(): ReactNode {
 	const { siteConfig } = useDocusaurusContext();
 	return (
 		<Layout
-			title={`Diseact`}
-			description="Description will go into a meta tag in <head />">
+			title="Diseact"
+			description="A package to make Discord Embeds, Components and Slash Commands using JSX">
 			<HomepageHeader />
 			<main>
 				<HomepageFeatures />
