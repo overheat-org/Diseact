@@ -39,3 +39,15 @@ Then, add the preset to your Babel configuration file (e.g., `.babelrc` or `babe
     ],
 }
 ```
+### Vite
+
+Using vite, you only need a config file (`vite.config.js`):
+
+```js
+export default {
+	esbuild: {
+		jsx: 'automatic',
+		jsxImportSource: 'diseact'
+	}
+}
+```
