@@ -23,5 +23,16 @@ function Counter() {
     </message>;
 }
 ```
+## Installation
+- Requires a module bundler
+```
+npm i diseact
+```
+## Why Diseact?
+- JSX directly for embeds, buttons, menus and modals
+- Hooks (state, context, effect)
+- Reusable Functional Components
+- Familiar React API 
+- Fully integrated to discord.js
 ## Documentation
 Visit https://diseact.vercel.app to get full documentation.
